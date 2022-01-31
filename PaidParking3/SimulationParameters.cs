@@ -1,45 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace PaidParking3
 {
+    [Serializable]
     class SimulationParameters
-    {       
+    {
         public const double DayMinPrice = 150;
         public const double DayMaxPrice = 300;
         public const double NightMinPrice = 100;
         public const double NightMaxPrice = 250;
-                
+
         public const double TFIntervalMin = 1;
         public const double TFIntervalMax = 10;
-               
+
         public const double TFMxMin = 1;
         public const double TFMxMax = 10;
         public const double TFDxMin = 0;
         public const double TFDxMax = 0.1;
-                            
+
         public const double TFMinMin = 1;
         public const double TFMinMax = 10;
         public const double TFMaxMin = 1;
         public const double TFMaxMax = 10;
-                            
+
         public const double TFLambdaMin = 0.1;
         public const double TFLambdaMax = 1;
 
         public const double PTIntervalMin = 10;
         public const double PTIntervalMax = 100;
-                            
+
         public const double PTMxMin = 10;
         public const double PTMxMax = 100;
         public const double PTDxMin = 0;
         public const double PTDxMax = 10;
-                            
+
         public const double PTMinMin = 10;
         public const double PTMinMax = 100;
         public const double PTMaxMin = 10;
         public const double PTMaxMax = 100;
-                            
+
         public const double PTLambdaMin = 0.01;
         public const double PTLambdaMax = 0.1;
 
@@ -148,5 +151,31 @@ namespace PaidParking3
         public double Lambda2 { get; set; } = PTLambdaMax;
         public int StartHour { get; set; } = 5;
         public int StartMinute { get; set; } = 0;
+        public const string Path = @"simulationParameters.json";
+        public void Serialize()
+        {
+            using (FileStream fstream = new FileStream(Path, FileMode.OpenOrCreate))
+            {
+                var ser = new DataContractJsonSerializer(typeof(SimulationParameters));
+                ser.WriteObject(fstream, this);
+            }
+        }
+
+        public static SimulationParameters Deserialize()
+        {
+            if (File.Exists(Path))
+            {
+                using (FileStream fstream = File.OpenRead(Path))
+                {
+                    var ser = new DataContractJsonSerializer(typeof(SimulationParameters));
+                    fstream.Position = 0;
+                    return (SimulationParameters)ser.ReadObject(fstream);
+                }
+            }
+            else
+            {
+                throw new FileNotFoundException();
+            }
+        }
     }
 }
