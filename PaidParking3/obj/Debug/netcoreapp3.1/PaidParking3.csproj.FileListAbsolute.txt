@@ -1,0 +1,15 @@
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\PaidParking3.exe
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\PaidParking3.deps.json
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\PaidParking3.runtimeconfig.json
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\PaidParking3.runtimeconfig.dev.json
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\PaidParking3.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\PaidParking3.pdb
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.csprojAssemblyReference.cache
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.SimulationParametersForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.csproj.GenerateResource.cache
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.AssemblyInfoInputs.cache
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.AssemblyInfo.cs
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.csproj.CoreCompileInputs.cache
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.pdb
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.genruntimeconfig.cache
