@@ -43,10 +43,10 @@ namespace PaidParking3
         public const double PTLambdaMin = 0.01;
         public const double PTLambdaMax = 0.1;
 
-        double enteringProbability;
-        double trucksPercentage;
-        double dayTariffPrice;
-        double nightTariffPrice;
+        //double enteringProbability = 0.5;
+        //double trucksPercentage = 20;
+        //double dayTariffPrice = DayMinPrice;
+        //double nightTariffPrice = NightMinPrice;
 
         public enum DetRan
         {
@@ -61,36 +61,46 @@ namespace PaidParking3
             Exponential
         }
 
-        double interval;
-        DistributionLaw law;
-        double mx;
-        double dx;
-        double min;
-        double max;
-        double lambda;
+        //DetRan trafficFlowType = DetRan.Random;
+        //double interval = TFIntervalMin;
+        //DistributionLaw law = DistributionLaw.Normal;
+        //double mx = TFMxMin;
+        //double dx = TFDxMax;
+        //double lambda = TFLambdaMax;
 
-        DetRan parkingTimeType;
-        double interval2;
-        DistributionLaw law2;
-        double mx2;
-        double dx2;
-        double min2;
-        double max2;
-        double lambda2;
+        //DetRan parkingTimeType = DetRan.Random;
+        //double interval2 = PTIntervalMin;
+        //DistributionLaw law2 = DistributionLaw.Normal;
+        //double mx2 = PTMxMin;
+        //double dx2 = PTDxMax;
+        //double lambda2 = PTLambdaMax;
 
-        int startHour;
-        int startMinute;
+        //int startHour = 5;
+        //int startMinute = 0;
 
-        public double EnteringProbability { get; set; }
-        public double TrucksPercentage { get; set; }
-        public double DayTariffPrice { get; set; }
-        public double NightTariffPrice { get; set; }
-        public DetRan TrafficFlowType { get; set; }
-        public double Interval { get; set; }
-        public DistributionLaw Law { get; set; }
-        public double Mx { get; set; }
-        public double Dx { get; set; }
-        public double Min { get; set; }
+        public double EnteringProbability { get; set; } = 0.5;
+        public double TrucksPercentage { get; set; } = 20;
+        public double DayTariffPrice { get; set; } = DayMinPrice;
+        public double NightTariffPrice { get; set; } = NightMinPrice;
+        public DetRan TrafficFlowType { get; set; } = DetRan.Random;
+        public double Interval { get; set; } = TFIntervalMin;
+        public DistributionLaw Law { get; set; } = DistributionLaw.Normal;
+        public double Mx { get; set; } = TFMxMin;
+        public double Dx { get; set; } = TFDxMax;
+        double min = TFMinMin;
+        public double Min
+        {
+            get
+            {
+                return min;
+            }
+            set
+            {
+                if (value <= max) min = value;
+                else throw new ArgumentOutOfRangeException();
+            }
+        }
+        double max = TFMaxMax;
         public double Max
         {
             get
@@ -103,16 +113,40 @@ namespace PaidParking3
                 else throw new ArgumentOutOfRangeException();
             }
         }
-        public double Lambda { get; set; }
-        public DetRan ParkingTimeType { get; set; }
-        public double Interval2 { get; set; }
-        public DistributionLaw Law2 { get; set; }
-        public double Mx2 { get; set; }
-        public double Dx2 { get; set; }
-        public double Min2 { get; set; }
-        public double Max2 { get; set; }
-        public double Lambda2 { get; set; }
-        public int StartHour { get; set; }
-        public int StartMinute { get; set; }
+        public double Lambda { get; set; } = TFLambdaMax;
+        public DetRan ParkingTimeType { get; set; } = DetRan.Random;
+        public double Interval2 { get; set; } = PTIntervalMin;
+        public DistributionLaw Law2 { get; set; } = DistributionLaw.Normal;
+        public double Mx2 { get; set; } = PTMxMin;
+        public double Dx2 { get; set; } = PTDxMax;
+        double min2 = TFMinMin;
+        public double Min2
+        {
+            get
+            {
+                return min2;
+            }
+            set
+            {
+                if (value <= max2) min2 = value;
+                else throw new ArgumentOutOfRangeException();
+            }
+        }
+        double max2 = TFMaxMax;
+        public double Max2
+        {
+            get
+            {
+                return max2;
+            }
+            set
+            {
+                if (value >= min2) max2 = value;
+                else throw new ArgumentOutOfRangeException();
+            }
+        }
+        public double Lambda2 { get; set; } = PTLambdaMax;
+        public int StartHour { get; set; } = 5;
+        public int StartMinute { get; set; } = 0;
     }
 }

@@ -12,6 +12,8 @@ namespace PaidParking3
 {
     public partial class SimulationParametersForm : Form
     {
+        SimulationParameters simulationParameters;
+
         public SimulationParametersForm()
         {
             InitializeComponent();
@@ -19,32 +21,96 @@ namespace PaidParking3
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            simulationParameters = new SimulationParameters();
             intervalLabel.Text = string.Format("Интервал ({0}-{1})", (int)SimulationParameters.TFIntervalMin, (int)SimulationParameters.TFIntervalMax);
             interval2Label.Text = string.Format("Интервал ({0}-{1})", (int)SimulationParameters.PTIntervalMin, (int)SimulationParameters.PTIntervalMax);
             dayPriceLabel.Text = string.Format("Тариф дневной ({0}-{1})", (int)SimulationParameters.DayMinPrice, (int)SimulationParameters.DayMaxPrice);
             nightPriceLabel.Text = string.Format("Тариф ночной (22:00-6:00, {0}-{1})", (int)SimulationParameters.NightMinPrice, (int)SimulationParameters.NightMaxPrice);
+            intervalTextBox.Text = simulationParameters.Interval.ToString();
+            distributionLawComboBox.SelectedItem = "Нормальный";
+            firstParamTextBox.Text = simulationParameters.Mx.ToString();
+            secondParamTextBox.Text = simulationParameters.Dx.ToString();
+            interval2TextBox.Text = simulationParameters.Interval2.ToString();
+            distributionLaw2ComboBox.SelectedItem = "Нормальный";
+            firstParam2TextBox.Text = simulationParameters.Mx2.ToString();
+            secondParam2TextBox.Text = simulationParameters.Dx2.ToString();
             setDefaultValues();
         }
 
         private void setDefaultValues()
         {
-            likelihoodTextBox.Text = "0.5";
-            percentageOfTrucksTextBox.Text = "20";
-            dayPriceTextBox.Text = SimulationParameters.DayMinPrice.ToString();
-            nightPriceTextBox.Text = SimulationParameters.NightMinPrice.ToString();
-
-            randomRadioButton.Checked = true;
-            distributionLawComboBox.SelectedItem = "Нормальный";
-            firstParamTextBox.Text = SimulationParameters.TFMxMin.ToString();
-            secondParamTextBox.Text = SimulationParameters.TFDxMax.ToString();
-
-            random2RadioButton.Checked = true;
-            distributionLaw2ComboBox.SelectedItem = "Нормальный";
-            firstParam2TextBox.Text = SimulationParameters.PTMxMin.ToString();
-            secondParam2TextBox.Text = SimulationParameters.PTDxMax.ToString();
-
-            startTimeHoursTextBox.Text = "05";
-            startTimeMinutesTextBox.Text = "00";
+            likelihoodTextBox.Text = simulationParameters.EnteringProbability.ToString();
+            percentageOfTrucksTextBox.Text = simulationParameters.TrucksPercentage.ToString();
+            dayPriceTextBox.Text = simulationParameters.DayTariffPrice.ToString();
+            nightPriceTextBox.Text = simulationParameters.NightTariffPrice.ToString();
+            if (simulationParameters.TrafficFlowType == SimulationParameters.DetRan.Random)
+            {
+                randomRadioButton.Checked = true;
+                SimulationParameters.DistributionLaw law = simulationParameters.Law;
+                switch (law)
+                {
+                    case SimulationParameters.DistributionLaw.Normal:
+                        {
+                            //distributionLawComboBox.SelectedItem = "Нормальный";
+                            //firstParamTextBox.Text = simulationParameters.Mx.ToString();
+                            //secondParamTextBox.Text = simulationParameters.Dx.ToString();
+                            break;
+                        }
+                    case SimulationParameters.DistributionLaw.Uniform:
+                        {
+                            distributionLawComboBox.SelectedItem = "Равномерный";
+                            firstParamTextBox.Text = simulationParameters.Min.ToString();
+                            secondParamTextBox.Text = simulationParameters.Max.ToString();
+                            break;
+                        }
+                    case SimulationParameters.DistributionLaw.Exponential:
+                        {
+                            distributionLawComboBox.SelectedItem = "Экспоненциальный";
+                            firstParamTextBox.Text = simulationParameters.Lambda.ToString();
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                deterministicRadioButton.Checked = true;
+                //intervalTextBox.Text = simulationParameters.Interval.ToString();
+            }
+            if (simulationParameters.ParkingTimeType == SimulationParameters.DetRan.Random)
+            {
+                random2RadioButton.Checked = true;
+                SimulationParameters.DistributionLaw law2 = simulationParameters.Law2;
+                switch (law2)
+                {
+                    case SimulationParameters.DistributionLaw.Normal:
+                        {
+                            //distributionLaw2ComboBox.SelectedItem = "Нормальный";
+                            //firstParam2TextBox.Text = simulationParameters.Mx2.ToString();
+                            //secondParam2TextBox.Text = simulationParameters.Dx2.ToString();
+                            break;
+                        }
+                    case SimulationParameters.DistributionLaw.Uniform:
+                        {
+                            distributionLaw2ComboBox.SelectedItem = "Равномерный";
+                            firstParam2TextBox.Text = simulationParameters.Min2.ToString();
+                            secondParam2TextBox.Text = simulationParameters.Max2.ToString();
+                            break;
+                        }
+                    case SimulationParameters.DistributionLaw.Exponential:
+                        {
+                            distributionLaw2ComboBox.SelectedItem = "Экспоненциальный";
+                            firstParam2TextBox.Text = simulationParameters.Lambda2.ToString();
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                deterministic2RadioButton.Checked = true;
+                //interval2TextBox.Text = simulationParameters.Interval2.ToString();
+            }
+            startTimeHoursTextBox.Text = simulationParameters.StartHour.ToString();
+            startTimeMinutesTextBox.Text = simulationParameters.StartMinute.ToString();
         }
 
         private void deterministicRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -81,6 +147,8 @@ namespace PaidParking3
                         panel3.Visible = true;
                         firstParamNameLabel.Text = string.Format("MX ({0}-{1})", (int)SimulationParameters.TFMxMin, (int)SimulationParameters.TFMxMax);
                         secondParamNameLabel.Text = string.Format("DX ({0}-{1})", (int)SimulationParameters.TFDxMin, SimulationParameters.TFDxMax);
+                        firstParamTextBox.Text = simulationParameters.Mx.ToString();
+                        secondParamTextBox.Text = simulationParameters.Dx.ToString();
                         break;
                     }
                 case "Равномерный":
@@ -88,12 +156,15 @@ namespace PaidParking3
                         panel3.Visible = true;
                         firstParamNameLabel.Text = string.Format("min ({0}-{1})", (int)SimulationParameters.TFMinMin, (int)SimulationParameters.TFMinMax);
                         secondParamNameLabel.Text = string.Format("max ({0}-{1})", (int)SimulationParameters.TFMaxMin, (int)SimulationParameters.TFMaxMax);
+                        firstParamTextBox.Text = simulationParameters.Min.ToString();
+                        secondParamTextBox.Text = simulationParameters.Max.ToString();
                         break;
                     }
                 case "Экспоненциальный":
                     {
                         panel3.Visible = false;
                         firstParamNameLabel.Text = string.Format("λ ({0}-{1})", SimulationParameters.TFLambdaMin, SimulationParameters.TFLambdaMax);
+                        firstParamTextBox.Text = simulationParameters.Lambda.ToString();
                         break;
                     }
             }
@@ -109,6 +180,8 @@ namespace PaidParking3
                         panel4.Visible = true;
                         firstParam2NameLabel.Text = string.Format("MX ({0}-{1})", (int)SimulationParameters.PTMxMin, (int)SimulationParameters.PTMxMax);
                         secondParam2NameLabel.Text = string.Format("DX ({0}-{1})", (int)SimulationParameters.PTDxMin, SimulationParameters.PTDxMax);
+                        firstParam2TextBox.Text = simulationParameters.Mx2.ToString();
+                        secondParam2TextBox.Text = simulationParameters.Dx2.ToString();
                         break;
                     }
                 case "Равномерный":
@@ -116,12 +189,15 @@ namespace PaidParking3
                         panel4.Visible = true;
                         firstParam2NameLabel.Text = string.Format("min ({0}-{1})", (int)SimulationParameters.PTMinMin, (int)SimulationParameters.PTMinMax);
                         secondParam2NameLabel.Text = string.Format("max ({0}-{1})", (int)SimulationParameters.PTMaxMin, (int)SimulationParameters.PTMaxMax);
+                        firstParam2TextBox.Text = simulationParameters.Min2.ToString();
+                        secondParam2TextBox.Text = simulationParameters.Max2.ToString();
                         break;
                     }
                 case "Экспоненциальный":
                     {
                         panel4.Visible = false;
                         firstParam2NameLabel.Text = string.Format("λ ({0}-{1})", SimulationParameters.PTLambdaMin, SimulationParameters.PTLambdaMax);
+                        firstParam2TextBox.Text = simulationParameters.Lambda2.ToString();
                         break;
                     }
             }
@@ -222,7 +298,15 @@ namespace PaidParking3
                             }
                             else
                             {
-                                simulationParameters.Min = value;
+                                try
+                                {
+                                    simulationParameters.Min = value;
+                                }
+                                catch (ArgumentOutOfRangeException)
+                                {
+                                    MessageBox.Show("Некорректное значение min и max транспортного потока.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
                             }
                             value0 = secondParamTextBox.Text.Replace('.', ',');
                             if (!double.TryParse(value0, out value) || value < SimulationParameters.TFMaxMin || value > SimulationParameters.TFMaxMax)
@@ -238,7 +322,7 @@ namespace PaidParking3
                                 }
                                 catch (ArgumentOutOfRangeException)
                                 {
-                                    MessageBox.Show("Некорректное значение max транспортного потока.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show("Некорректное значение min и max транспортного потока.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
                                 }
                             }
@@ -311,7 +395,15 @@ namespace PaidParking3
                             }
                             else
                             {
-                                simulationParameters.Min2 = value;
+                                try
+                                {
+                                    simulationParameters.Min2 = value;
+                                }
+                                catch (ArgumentOutOfRangeException)
+                                {
+                                    MessageBox.Show("Некорректное значение min и max времени стоянки.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
                             }
                             value0 = secondParam2TextBox.Text.Replace('.', ',');
                             if (!double.TryParse(value0, out value) || value < SimulationParameters.PTMaxMin || value > SimulationParameters.PTMaxMax)
@@ -321,7 +413,15 @@ namespace PaidParking3
                             }
                             else
                             {
-                                simulationParameters.Max2 = value;
+                                try
+                                {
+                                    simulationParameters.Max2 = value;
+                                }
+                                catch (ArgumentOutOfRangeException)
+                                {
+                                    MessageBox.Show("Некорректное значение min и max времени стоянки.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
                             }
                             break;
                         }
@@ -362,6 +462,7 @@ namespace PaidParking3
             {
                 simulationParameters.StartMinute = value2;
             }
+            //MessageBox.Show("Параметры моделирования заданы успешно.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void backButton_Click(object sender, EventArgs e)
