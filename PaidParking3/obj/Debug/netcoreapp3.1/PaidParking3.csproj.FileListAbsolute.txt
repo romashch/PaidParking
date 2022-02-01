@@ -13,3 +13,10 @@ C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\n
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.dll
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.pdb
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.genruntimeconfig.cache
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.AboutDevForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.MainMenuForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.ParkingCreationForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.ParkingDimensionsForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.ParkingLoadingForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.SaveToDBForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.SimulationForm.resources

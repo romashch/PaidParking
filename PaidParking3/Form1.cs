@@ -14,10 +14,17 @@ namespace PaidParking3
     public partial class SimulationParametersForm : Form
     {
         SimulationParameters simulationParameters;
+        MainMenuForm form;
 
         public SimulationParametersForm()
         {
             InitializeComponent();
+        }
+
+        public SimulationParametersForm(MainMenuForm form)
+        {
+            InitializeComponent();
+            this.form = form;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -483,11 +490,19 @@ namespace PaidParking3
             }
             //MessageBox.Show("Параметры моделирования заданы успешно.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
             simulationParameters.Serialize();
+            Close();
+            MainMenuForm form = new MainMenuForm();
+            form.Show();
         }
 
         private void backButton_Click(object sender, EventArgs e)
         {
+            Close();
+        }
 
+        private void SimulationParametersForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            form.Show();
         }
     }
 }

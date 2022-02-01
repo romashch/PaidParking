@@ -573,7 +573,9 @@ namespace PaidParking3
             this.MaximumSize = new System.Drawing.Size(439, 582);
             this.MinimumSize = new System.Drawing.Size(439, 582);
             this.Name = "SimulationParametersForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Параметры моделирования";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SimulationParametersForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
