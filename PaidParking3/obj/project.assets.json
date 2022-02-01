@@ -1,11 +1,36 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "Control.Draggable/1.0.5049.269": {
+        "type": "package",
+        "compile": {
+          "lib/net35-Client/Control.Draggable.dll": {}
+        },
+        "runtime": {
+          "lib/net35-Client/Control.Draggable.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Control.Draggable/1.0.5049.269": {
+      "sha512": "mwRZLDAyCA8dPgtiZnmHq+u96ga/aDnxPEg76t//CpZtpzHhUU+qAN/IhMcOvyrOjtclyLB+DAOfGRgePrMRgA==",
+      "type": "package",
+      "path": "control.draggable/1.0.5049.269",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "control.draggable.1.0.5049.269.nupkg.sha512",
+        "control.draggable.nuspec",
+        "lib/net35-Client/Control.Draggable.dll"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "Control.Draggable >= 1.0.5049.269"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\dvt21\\.nuget\\packages\\": {}
@@ -45,6 +70,12 @@
     "frameworks": {
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "Control.Draggable": {
+            "target": "Package",
+            "version": "[1.0.5049.269, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -66,5 +97,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Control.Draggable 1.0.5049.269' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Control.Draggable",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

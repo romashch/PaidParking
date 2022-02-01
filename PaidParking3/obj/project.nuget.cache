@@ -1,8 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "jKGuMXpH10dVxYbiLIWhPu72b23YFjXFSFVZP2oA7oqyXJljmqmfMcSmTwikoNBVu1WjRE3fzXvJDzG2O0GxaQ==",
+  "dgSpecHash": "Pp9SeOnD7Qi4GMZdIq8ovbkq5LyWxNGEUP+6/25OGWE3hMz2NZ1blLbhozdxhDYKDp0XvTbrIo4rb2Spt+wzJQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\dvt21\\Documents\\Универ\\ПИ\\PaidParking3\\PaidParking3\\PaidParking3.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\dvt21\\.nuget\\packages\\control.draggable\\1.0.5049.269\\control.draggable.1.0.5049.269.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Control.Draggable 1.0.5049.269' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Control.Draggable",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

@@ -29,6 +29,7 @@ namespace PaidParking3
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParkingCreationForm));
             this.TPSPictureBox = new System.Windows.Forms.PictureBox();
             this.CPSPictureBox = new System.Windows.Forms.PictureBox();
             this.entryPictureBox = new System.Windows.Forms.PictureBox();
@@ -53,62 +54,95 @@ namespace PaidParking3
             // 
             // TPSPictureBox
             // 
-            this.TPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.TPSPictureBox.Location = new System.Drawing.Point(16, 58);
+            this.TPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.TPSPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TPSPictureBox.BackgroundImage")));
+            this.TPSPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TPSPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("TPSPictureBox.Image")));
+            this.TPSPictureBox.ImageLocation = "";
+            this.TPSPictureBox.Location = new System.Drawing.Point(18, 58);
             this.TPSPictureBox.Name = "TPSPictureBox";
             this.TPSPictureBox.Size = new System.Drawing.Size(45, 90);
+            this.TPSPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.TPSPictureBox.TabIndex = 0;
             this.TPSPictureBox.TabStop = false;
+            this.TPSPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             // 
             // CPSPictureBox
             // 
             this.CPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.CPSPictureBox.Location = new System.Drawing.Point(73, 58);
+            this.CPSPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CPSPictureBox.BackgroundImage")));
+            this.CPSPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CPSPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("CPSPictureBox.Image")));
+            this.CPSPictureBox.ImageLocation = "";
+            this.CPSPictureBox.Location = new System.Drawing.Point(75, 58);
             this.CPSPictureBox.Name = "CPSPictureBox";
             this.CPSPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.CPSPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.CPSPictureBox.TabIndex = 1;
             this.CPSPictureBox.TabStop = false;
+            this.CPSPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             // 
             // entryPictureBox
             // 
             this.entryPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.entryPictureBox.Location = new System.Drawing.Point(129, 58);
+            this.entryPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("entryPictureBox.BackgroundImage")));
+            this.entryPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.entryPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("entryPictureBox.Image")));
+            this.entryPictureBox.ImageLocation = "";
+            this.entryPictureBox.Location = new System.Drawing.Point(131, 58);
             this.entryPictureBox.Name = "entryPictureBox";
             this.entryPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.entryPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.entryPictureBox.TabIndex = 2;
             this.entryPictureBox.TabStop = false;
+            this.entryPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             // 
             // exitPictureBox
             // 
             this.exitPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.exitPictureBox.Location = new System.Drawing.Point(73, 114);
+            this.exitPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
+            this.exitPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("exitPictureBox.Image")));
+            this.exitPictureBox.ImageLocation = "";
+            this.exitPictureBox.Location = new System.Drawing.Point(75, 114);
             this.exitPictureBox.Name = "exitPictureBox";
             this.exitPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.exitPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.exitPictureBox.TabIndex = 3;
             this.exitPictureBox.TabStop = false;
+            this.exitPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             // 
             // ticketOfficePictureBox
             // 
             this.ticketOfficePictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ticketOfficePictureBox.Location = new System.Drawing.Point(129, 114);
+            this.ticketOfficePictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
+            this.ticketOfficePictureBox.Image = ((System.Drawing.Image)(resources.GetObject("ticketOfficePictureBox.Image")));
+            this.ticketOfficePictureBox.ImageLocation = "";
+            this.ticketOfficePictureBox.Location = new System.Drawing.Point(131, 114);
             this.ticketOfficePictureBox.Name = "ticketOfficePictureBox";
             this.ticketOfficePictureBox.Size = new System.Drawing.Size(45, 45);
+            this.ticketOfficePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ticketOfficePictureBox.TabIndex = 4;
             this.ticketOfficePictureBox.TabStop = false;
+            this.ticketOfficePictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             // 
             // lawnPictureBox
             // 
             this.lawnPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lawnPictureBox.Location = new System.Drawing.Point(16, 161);
+            this.lawnPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
+            this.lawnPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("lawnPictureBox.Image")));
+            this.lawnPictureBox.ImageLocation = "";
+            this.lawnPictureBox.Location = new System.Drawing.Point(18, 161);
             this.lawnPictureBox.Name = "lawnPictureBox";
             this.lawnPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.lawnPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.lawnPictureBox.TabIndex = 5;
             this.lawnPictureBox.TabStop = false;
+            this.lawnPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseDown);
             // 
             // aboutProgramButton
             // 
             this.aboutProgramButton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.aboutProgramButton.Location = new System.Drawing.Point(16, 13);
+            this.aboutProgramButton.Location = new System.Drawing.Point(18, 13);
             this.aboutProgramButton.Name = "aboutProgramButton";
             this.aboutProgramButton.Size = new System.Drawing.Size(35, 35);
             this.aboutProgramButton.TabIndex = 6;
@@ -169,11 +203,17 @@ namespace PaidParking3
             // fieldPictureBox
             // 
             this.fieldPictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.fieldPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
+            this.fieldPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.fieldPictureBox.Location = new System.Drawing.Point(200, 0);
             this.fieldPictureBox.Name = "fieldPictureBox";
             this.fieldPictureBox.Size = new System.Drawing.Size(225, 225);
+            this.fieldPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.fieldPictureBox.TabIndex = 12;
             this.fieldPictureBox.TabStop = false;
+            this.fieldPictureBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.fieldPictureBox_DragDrop);
+            this.fieldPictureBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.fieldPictureBox_DragEnter);
+            this.fieldPictureBox.DragLeave += new System.EventHandler(this.fieldPictureBox_DragLeave);
             // 
             // ParkingCreationForm
             // 

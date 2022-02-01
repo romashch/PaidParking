@@ -30,7 +30,7 @@ namespace PaidParking3
         private void SimulationForm_Load(object sender, EventArgs e)
         {
             fieldPictureBox.Width = length * 45;
-            fieldPictureBox.Height = width * 45;
+            fieldPictureBox.Height = width * 45 + 45;
             Width = 260 + 16 + fieldPictureBox.Width;
             Height = 532;
             if (Height < fieldPictureBox.Height)

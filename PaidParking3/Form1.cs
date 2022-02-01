@@ -491,8 +491,6 @@ namespace PaidParking3
             //MessageBox.Show("Параметры моделирования заданы успешно.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
             simulationParameters.Serialize();
             Close();
-            MainMenuForm form = new MainMenuForm();
-            form.Show();
         }
 
         private void backButton_Click(object sender, EventArgs e)

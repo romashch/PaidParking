@@ -78,13 +78,39 @@ namespace PaidParking3
         private void ParkingCreationForm_Load(object sender, EventArgs e)
         {
             fieldPictureBox.Width = length * 45;
-            fieldPictureBox.Height = width * 45;
+            fieldPictureBox.Height = width * 45 + 45;
             Width = fieldPictureBox.Width + 200 + 16;
             Height = 450;
             if (fieldPictureBox.Height > Height)
             {
                 Height = fieldPictureBox.Height;
             }
+
+            fieldPictureBox.AllowDrop = true;
+        }
+
+        private void PictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            ((PictureBox)sender).DoDragDrop(((PictureBox)sender).Image, DragDropEffects.Copy);
+        }
+
+        private void fieldPictureBox_DragDrop(object sender, DragEventArgs e)
+        {
+            Image getImage = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+            fieldPictureBox.Image = getImage;
+        }
+
+        private void fieldPictureBox_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void fieldPictureBox_DragLeave(object sender, EventArgs e)
+        {
+
         }
     }
 }

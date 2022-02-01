@@ -20,3 +20,6 @@ C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\n
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.ParkingLoadingForm.resources
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.SaveToDBForm.resources
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.SimulationForm.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.Properties.Resources.resources
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\Control.Draggable.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\obj\Debug\netcoreapp3.1\PaidParking3.csproj.CopyComplete
