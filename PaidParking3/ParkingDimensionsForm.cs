@@ -55,7 +55,7 @@ namespace PaidParking3
 
         private void ParkingDimensionsForm_Load(object sender, EventArgs e)
         {
-            lengthTextBox.Text = "5";
+            lengthTextBox.Text = "8";
             widthTextBox.Text = "5";
         }
     }

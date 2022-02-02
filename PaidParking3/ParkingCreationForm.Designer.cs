@@ -57,7 +57,7 @@ namespace PaidParking3
             this.TPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.TPSPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TPSPictureBox.BackgroundImage")));
             this.TPSPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.TPSPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("TPSPictureBox.Image")));
+            this.TPSPictureBox.Image = global::PaidParking3.Properties.Resources.TPS;
             this.TPSPictureBox.ImageLocation = "";
             this.TPSPictureBox.Location = new System.Drawing.Point(18, 58);
             this.TPSPictureBox.Name = "TPSPictureBox";
@@ -202,7 +202,7 @@ namespace PaidParking3
             // 
             // fieldPictureBox
             // 
-            this.fieldPictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.fieldPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.fieldPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
             this.fieldPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.fieldPictureBox.Location = new System.Drawing.Point(200, 0);
@@ -211,9 +211,6 @@ namespace PaidParking3
             this.fieldPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.fieldPictureBox.TabIndex = 12;
             this.fieldPictureBox.TabStop = false;
-            this.fieldPictureBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.fieldPictureBox_DragDrop);
-            this.fieldPictureBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.fieldPictureBox_DragEnter);
-            this.fieldPictureBox.DragLeave += new System.EventHandler(this.fieldPictureBox_DragLeave);
             // 
             // ParkingCreationForm
             // 
