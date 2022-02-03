@@ -72,7 +72,7 @@ namespace PaidParking3
             this.CPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.CPSPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CPSPictureBox.BackgroundImage")));
             this.CPSPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CPSPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("CPSPictureBox.Image")));
+            this.CPSPictureBox.Image = global::PaidParking3.Properties.Resources.CPS;
             this.CPSPictureBox.ImageLocation = "";
             this.CPSPictureBox.Location = new System.Drawing.Point(75, 58);
             this.CPSPictureBox.Name = "CPSPictureBox";
@@ -87,7 +87,7 @@ namespace PaidParking3
             this.entryPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.entryPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("entryPictureBox.BackgroundImage")));
             this.entryPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.entryPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("entryPictureBox.Image")));
+            this.entryPictureBox.Image = global::PaidParking3.Properties.Resources.entry;
             this.entryPictureBox.ImageLocation = "";
             this.entryPictureBox.Location = new System.Drawing.Point(131, 58);
             this.entryPictureBox.Name = "entryPictureBox";
@@ -101,7 +101,7 @@ namespace PaidParking3
             // 
             this.exitPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.exitPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
-            this.exitPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("exitPictureBox.Image")));
+            this.exitPictureBox.Image = global::PaidParking3.Properties.Resources.exit;
             this.exitPictureBox.ImageLocation = "";
             this.exitPictureBox.Location = new System.Drawing.Point(75, 114);
             this.exitPictureBox.Name = "exitPictureBox";
@@ -115,7 +115,7 @@ namespace PaidParking3
             // 
             this.ticketOfficePictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ticketOfficePictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
-            this.ticketOfficePictureBox.Image = ((System.Drawing.Image)(resources.GetObject("ticketOfficePictureBox.Image")));
+            this.ticketOfficePictureBox.Image = global::PaidParking3.Properties.Resources.ticketOffice;
             this.ticketOfficePictureBox.ImageLocation = "";
             this.ticketOfficePictureBox.Location = new System.Drawing.Point(131, 114);
             this.ticketOfficePictureBox.Name = "ticketOfficePictureBox";
@@ -129,7 +129,7 @@ namespace PaidParking3
             // 
             this.lawnPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.lawnPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
-            this.lawnPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("lawnPictureBox.Image")));
+            this.lawnPictureBox.Image = global::PaidParking3.Properties.Resources.lawn;
             this.lawnPictureBox.ImageLocation = "";
             this.lawnPictureBox.Location = new System.Drawing.Point(18, 161);
             this.lawnPictureBox.Name = "lawnPictureBox";
@@ -156,7 +156,7 @@ namespace PaidParking3
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(163, 29);
             this.saveButton.TabIndex = 7;
-            this.saveButton.Text = "Сохранить";
+            this.saveButton.Text = "Проверить и сохранить";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
@@ -207,7 +207,7 @@ namespace PaidParking3
             this.fieldPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.fieldPictureBox.Location = new System.Drawing.Point(200, 0);
             this.fieldPictureBox.Name = "fieldPictureBox";
-            this.fieldPictureBox.Size = new System.Drawing.Size(225, 225);
+            this.fieldPictureBox.Size = new System.Drawing.Size(225, 450);
             this.fieldPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.fieldPictureBox.TabIndex = 12;
             this.fieldPictureBox.TabStop = false;
@@ -216,7 +216,7 @@ namespace PaidParking3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 411);
+            this.ClientSize = new System.Drawing.Size(425, 450);
             this.Controls.Add(this.fieldPictureBox);
             this.Controls.Add(this.saveToDBButton);
             this.Controls.Add(this.backToMenuButton);
@@ -231,7 +231,7 @@ namespace PaidParking3
             this.Controls.Add(this.CPSPictureBox);
             this.Controls.Add(this.TPSPictureBox);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(441, 450);
+            this.MinimumSize = new System.Drawing.Size(441, 444);
             this.Name = "ParkingCreationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "Создание парковки";

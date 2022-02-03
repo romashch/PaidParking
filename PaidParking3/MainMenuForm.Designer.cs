@@ -119,7 +119,7 @@ namespace PaidParking3
             this.MinimumSize = new System.Drawing.Size(289, 274);
             this.Name = "MainMenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainMenuForm";
+            this.Text = "Главное меню";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainMenuForm_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

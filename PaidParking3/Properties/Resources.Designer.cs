@@ -63,6 +63,46 @@ namespace PaidParking3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CPS {
+            get {
+                object obj = ResourceManager.GetObject("CPS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap entry {
+            get {
+                object obj = ResourceManager.GetObject("entry", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap exit {
+            get {
+                object obj = ResourceManager.GetObject("exit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lawn {
+            get {
+                object obj = ResourceManager.GetObject("lawn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap road {
             get {
                 object obj = ResourceManager.GetObject("road", resourceCulture);
@@ -73,9 +113,9 @@ namespace PaidParking3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TPS {
+        internal static System.Drawing.Bitmap ticketOffice {
             get {
-                object obj = ResourceManager.GetObject("TPS", resourceCulture);
+                object obj = ResourceManager.GetObject("ticketOffice", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +123,9 @@ namespace PaidParking3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TPS2 {
+        internal static System.Drawing.Bitmap TPS {
             get {
-                object obj = ResourceManager.GetObject("TPS2", resourceCulture);
+                object obj = ResourceManager.GetObject("TPS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
