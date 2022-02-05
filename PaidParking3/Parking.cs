@@ -24,6 +24,12 @@ namespace PaidParking3
         }
         Sample[,] topology;
 
+        [NonSerialized]
+        static List<List<Vertice>> entryWays;
+
+        [NonSerialized]
+        static List<List<Vertice>> exitWays;
+
         public Sample[,] Topology { get { return topology; } }
 
         struct Vertice
@@ -36,6 +42,10 @@ namespace PaidParking3
                 this.x = x;
                 this.y = y;
                 this.s = s;
+            }
+            public override string ToString()
+            {
+                return x + " " + y;
             }
         }
 
@@ -69,7 +79,7 @@ namespace PaidParking3
         public static Parking Validation(Sample[,] topology)
         {
             int entryX = -1, entryY = -1, ticketOfficeX = -1, ticketOfficeY = -1;
-            bool isEntry = false, isExit = false, isTicketOffice = false;
+            bool isEntry = false, isExit = false, isTicketOffice = false, isPS = false;
             for (int i = 0; i < topology.GetLength(0); i++)
             {
                 for (int j = 0; j < topology.GetLength(1); j++)
@@ -98,9 +108,13 @@ namespace PaidParking3
                             return null;
                         }
                     }
+                    if (topology[i, j] == Sample.TPS || topology[i, j] == Sample.CPS)
+                    {
+                        isPS = true;
+                    }
                 }
             }
-            if (!(isExit && isEntry && isTicketOffice))
+            if (!(isExit && isEntry && isTicketOffice && isPS))
             {
                 return null;
             }
@@ -112,6 +126,10 @@ namespace PaidParking3
             {
                 return null;
             }
+            else
+            {
+                DijkstrasAlgorithmWithWays(topology);
+            }
             return new Parking(topology);
         }
 
@@ -121,24 +139,24 @@ namespace PaidParking3
             List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
             GraphFormation(topology, out vertices, out adjacencyList);
 
-            StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
-            for (int i = 0; i < topology.GetLength(0); i++)
-            {
-                for (int j = 0; j < topology.GetLength(1); j++)
-                {
-                    sw.Write(topology[i, j] + "\t");
-                }
-                sw.WriteLine();
-            }
-            for (int i = 0; i < vertices.Count; i++)
-            {
-                sw.Write(vertices[i].x + " " + vertices[i].y + " | ");
-                for (int j = 0; j < adjacencyList[i].Count; j++)
-                {
-                    sw.Write(adjacencyList[i][j].x + " " + adjacencyList[i][j].y + "; ");
-                }
-                sw.WriteLine();
-            }
+            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            //for (int i = 0; i < topology.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < topology.GetLength(1); j++)
+            //    {
+            //        sw.Write(topology[i, j] + "\t");
+            //    }
+            //    sw.WriteLine();
+            //}
+            //for (int i = 0; i < vertices.Count; i++)
+            //{
+            //    sw.Write(vertices[i].x + " " + vertices[i].y + " | ");
+            //    for (int j = 0; j < adjacencyList[i].Count; j++)
+            //    {
+            //        sw.Write(adjacencyList[i][j].x + " " + adjacencyList[i][j].y + "; ");
+            //    }
+            //    sw.WriteLine();
+            //}
 
             int[] d = new int[vertices.Count];
             bool[] u = new bool[vertices.Count];
@@ -181,36 +199,36 @@ namespace PaidParking3
                     if (d[i] == int.MaxValue && (vertices[i].s == Sample.CPS || vertices[i].s == Sample.TPS))
                     {
 
-                        sw.WriteLine("Неуспех " + (k + 1));
-                        for (int j = 0; j < d.Length; j++)
-                        {
-                            sw.Write(vertices[j].x + "\t" + vertices[j].y + "\t" + vertices[j].s + "\t" + d[j] + "\t" + u[j] + "\t" + " | ");
-                            for (int n = 0; n < adjacencyList[j].Count; n++)
-                            {
-                                sw.Write(adjacencyList[j][n].x + " " + adjacencyList[j][n].y + "; ");
-                            }
-                            sw.WriteLine();
-                        }
-                        sw.Close();
+                        //sw.WriteLine("Неуспех " + (k + 1));
+                        //for (int j = 0; j < d.Length; j++)
+                        //{
+                        //    sw.Write(vertices[j].x + "\t" + vertices[j].y + "\t" + vertices[j].s + "\t" + d[j] + "\t" + u[j] + "\t" + " | ");
+                        //    for (int n = 0; n < adjacencyList[j].Count; n++)
+                        //    {
+                        //        sw.Write(adjacencyList[j][n].x + " " + adjacencyList[j][n].y + "; ");
+                        //    }
+                        //    sw.WriteLine();
+                        //}
+                        //sw.Close();
 
                         return false;
                     }
                 }
 
-                sw.WriteLine("Успех " + (k + 1));
-                for (int j = 0; j < d.Length; j++)
-                {
-                    sw.Write(vertices[j].x + "\t" + vertices[j].y + "\t" + vertices[j].s + "\t" + d[j] + "\t" + u[j] + "\t" + " | ");
-                    for (int n = 0; n < adjacencyList[j].Count; n++)
-                    {
-                        sw.Write(adjacencyList[j][n].x + " " + adjacencyList[j][n].y + "; ");
-                    }
-                    sw.WriteLine();
-                }
+                //sw.WriteLine("Успех " + (k + 1));
+                //for (int j = 0; j < d.Length; j++)
+                //{
+                //    sw.Write(vertices[j].x + "\t" + vertices[j].y + "\t" + vertices[j].s + "\t" + d[j] + "\t" + u[j] + "\t" + " | ");
+                //    for (int n = 0; n < adjacencyList[j].Count; n++)
+                //    {
+                //        sw.Write(adjacencyList[j][n].x + " " + adjacencyList[j][n].y + "; ");
+                //    }
+                //    sw.WriteLine();
+                //}
 
             }
 
-            sw.Close();
+            //sw.Close();
 
             return true;
         }
@@ -332,6 +350,90 @@ namespace PaidParking3
             {
                 throw new FileNotFoundException();
             }
+        }
+
+        public static void DijkstrasAlgorithmWithWays(Sample[,] topology)
+        {
+            List<Vertice> vertices = new List<Vertice>();
+            List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
+            GraphFormation(topology, out vertices, out adjacencyList);
+            int[] d = new int[vertices.Count];
+            bool[] u = new bool[vertices.Count];
+            Vertice[] p = new Vertice[vertices.Count];
+            entryWays = new List<List<Vertice>>();
+            exitWays = new List<List<Vertice>>();
+            int startIndex = -1;
+            for (int k = 0; k < 2; k++)
+            {
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    if (k == 0 && vertices[i].s == Sample.Entry || k == 1 && vertices[i].s == Sample.Exit)
+                    {
+                        d[i] = 0;
+                        startIndex = i;
+                    }
+                    else
+                        d[i] = int.MaxValue;
+                    u[i] = false;
+                }
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    int min = d.Where((elem, idx) => u[idx] == false).Min();
+                    int minIndex = -1;
+                    for (int j = 0; j < d.Length; j++)
+                        if (d[j] == min && u[j] == false)
+                            minIndex = j;
+                    u[minIndex] = true;
+                    for (int j = 0; j < adjacencyList[minIndex].Count; j++)
+                    {
+                        int idx = vertices.FindIndex(v => v.Equals(adjacencyList[minIndex][j]));
+                        bool isPass = d[idx] != int.MaxValue;
+                        if (!isPass)
+                        {
+                            if (d[idx] > d[minIndex] + 1)
+                                p[idx] = vertices[minIndex];
+                            d[idx] = Math.Min(d[idx], d[minIndex] + 1);
+                        }
+                        if (d[idx] == int.MinValue)
+                            d[idx] = int.MaxValue;
+                    }
+                }
+                for (int i = 0; i < p.Length; i++)
+                {
+                    List<Vertice> cur = new List<Vertice>();
+                    if (vertices[i].s == Sample.TPS || vertices[i].s == Sample.CPS)
+                    {
+                        for (Vertice v = vertices[i]; !v.Equals(vertices[startIndex]); v = p[vertices.IndexOf(v)])
+                            cur.Add(v);
+                        cur.Add(vertices[startIndex]);
+                        cur.Reverse();
+                    }
+                    if (k == 0) entryWays.Add(cur);
+                    else exitWays.Add(cur);
+                }
+            }
+
+            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            //for (int i = 0; i < entryWays.Count; i++)
+            //{
+            //    sw.Write(vertices[i] + " | ");
+            //    for (int j = 0; j < entryWays[i].Count; j++)
+            //    {
+            //        sw.Write(entryWays[i][j] + " ; ");
+            //    }
+            //    sw.WriteLine();
+            //}
+            //for (int i = 0; i < exitWays.Count; i++)
+            //{
+            //    sw.Write(vertices[i] + " | ");
+            //    for (int j = 0; j < exitWays[i].Count; j++)
+            //    {
+            //        sw.Write(exitWays[i][j] + " ; ");
+            //    }
+            //    sw.WriteLine();
+            //}
+            //sw.Close();
+
         }
     }
 }
