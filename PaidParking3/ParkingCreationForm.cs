@@ -194,7 +194,7 @@ namespace PaidParking3
                     return;
                 }
                 pictureBox.Size = new Size(45, 90);
-                topology[pictureBox.Location.Y / 45 + 1, pictureBox.Location.X / 45] = current;
+                topology[pictureBox.Location.Y / 45 + 1, pictureBox.Location.X / 45] = Sample.None;
             }
             else if (current == Sample.Entry)
             {

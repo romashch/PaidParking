@@ -10,6 +10,7 @@ namespace PaidParking3
     {
         public enum Sample
         {
+            None,
             Road,
             TPS,
             CPS,
@@ -90,21 +91,27 @@ namespace PaidParking3
         {
             List<Vertice> vertices = new List<Vertice>();
             List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
-            GraphFormation(topology, out vertices, out adjacencyList); 
-            
-            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
-            //for (int i = 0; i < vertices.Count; i++)
-            //{
-            //    sw.Write(vertices[i].x + " " + vertices[i].y + " | ");
-            //    for (int j = 0; j < adjacencyList[i].Count; j++)
-            //    {
-            //        sw.Write(adjacencyList[i][j].x + " " + adjacencyList[i][j].y + "; ");
-            //    }
-            //    sw.WriteLine();
-            //}
-            //sw.Close();
+            GraphFormation(topology, out vertices, out adjacencyList);
 
             StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            for (int i = 0; i < topology.GetLength(0); i++)
+            {
+                for (int j = 0; j < topology.GetLength(1); j++)
+                {
+                    sw.Write(topology[i, j] + "\t");
+                }
+                sw.WriteLine();
+            }
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                sw.Write(vertices[i].x + " " + vertices[i].y + " | ");
+                for (int j = 0; j < adjacencyList[i].Count; j++)
+                {
+                    sw.Write(adjacencyList[i][j].x + " " + adjacencyList[i][j].y + "; ");
+                }
+                sw.WriteLine();
+            }
+
             int[] d = new int[vertices.Count];
             bool[] u = new bool[vertices.Count];
             for (int k = 0; k < 2; k++)
@@ -122,23 +129,39 @@ namespace PaidParking3
                 for (int i = 0; i < vertices.Count; i++)
                 {
                     int min = d.Where((elem, idx) => u[idx] == false).Min();
-                    int minIndex = Array.IndexOf(d, min);
+                    int minIndex = -1;
+                    for (int j = 0; j < d.Length; j++)
+                    {
+                        if (d[j] == min && u[j] == false)
+                        {
+                            minIndex = j;
+                        }
+                    }
                     u[minIndex] = true;
                     for (int j = 0; j < adjacencyList[minIndex].Count; j++)
                     {
                         int idx = vertices.FindIndex(v => v.Equals(adjacencyList[minIndex][j]));
-                        d[idx] = Math.Min(d[idx], d[minIndex] + 1);
+                        bool isPass = d[idx] != int.MaxValue;
+                        if (!isPass)
+                            d[idx] = Math.Min(d[idx], d[minIndex] + 1);
+                        if (d[idx] == int.MinValue)
+                            d[idx] = int.MaxValue;
                     }
                 }
                 for (int i = 0; i < d.Length; i++)
                 {
-                    if (d[i] == int.MaxValue && vertices[i].s != Sample.Road)
+                    if (d[i] == int.MaxValue && (vertices[i].s == Sample.CPS || vertices[i].s == Sample.TPS))
                     {
-                        
+
                         sw.WriteLine("Неуспех " + (k + 1));
                         for (int j = 0; j < d.Length; j++)
                         {
-                            sw.WriteLine(j + "\t" + d[j] + "\t" + u[j]);
+                            sw.Write(vertices[j].x + "\t" + vertices[j].y + "\t" + vertices[j].s + "\t" + d[j] + "\t" + u[j] + "\t" + " | ");
+                            for (int n = 0; n < adjacencyList[j].Count; n++)
+                            {
+                                sw.Write(adjacencyList[j][n].x + " " + adjacencyList[j][n].y + "; ");
+                            }
+                            sw.WriteLine();
                         }
                         sw.Close();
 
@@ -149,7 +172,12 @@ namespace PaidParking3
                 sw.WriteLine("Успех " + (k + 1));
                 for (int j = 0; j < d.Length; j++)
                 {
-                    sw.WriteLine(j + "\t" + d[j] + "\t" + u[j]);
+                    sw.Write(vertices[j].x + "\t" + vertices[j].y + "\t" + vertices[j].s + "\t" + d[j] + "\t" + u[j] + "\t" + " | ");
+                    for (int n = 0; n < adjacencyList[j].Count; n++)
+                    {
+                        sw.Write(adjacencyList[j][n].x + " " + adjacencyList[j][n].y + "; ");
+                    }
+                    sw.WriteLine();
                 }
 
             }
@@ -174,16 +202,8 @@ namespace PaidParking3
                     }
                     else if (topology[i, j] == Sample.TPS)
                     {
-                        if (i != 0 && topology[i - 1, j] == Sample.TPS)
-                        {
-                            int idx = vertices.FindIndex(pair => pair.Equals(new Vertice(i - 1, j, Sample.TPS)));
-                            adjacencyList[idx].AddRange(getAdjacentVertices(i, j, topology));
-                        }
-                        else
-                        {
-                            vertices.Add(new Vertice(i, j, topology[i, j]));
-                            adjacencyList.Add(getAdjacentVertices(i, j, topology));
-                        }
+                        vertices.Add(new Vertice(i, j, topology[i, j]));
+                        adjacencyList.Add(getAdjacentVertices(i, j, topology));
                     }
                     else if (topology[i, j] == Sample.CPS)
                     {
@@ -209,9 +229,9 @@ namespace PaidParking3
             List<Vertice> res = new List<Vertice>();
             if (topology[i, j] == Sample.CPS || topology[i, j] == Sample.TPS)
                 return res;
-            if (i != 0 && (topology[i - 1, j] == Sample.Road || topology[i - 1, j] == Sample.TPS || topology[i - 1, j] == Sample.CPS))
+            if (i != 0 && (topology[i - 1, j] == Sample.Road || topology[i - 1, j] == Sample.TPS || topology[i - 1, j] == Sample.None || topology[i - 1, j] == Sample.CPS))
             {
-                if (topology[i - 1, j] != Sample.TPS)
+                if (topology[i - 1, j] != Sample.None)
                     res.Add(new Vertice(i - 1, j, topology[i - 1, j]));
                 else
                     res.Add(new Vertice(i - 2, j, topology[i - 2, j]));
@@ -220,19 +240,19 @@ namespace PaidParking3
             {
                 res.Add(new Vertice(i + 1, j, topology[i + 1, j]));
             }
-            if (j != 0 && (topology[i, j - 1] == Sample.Road || topology[i, j - 1] == Sample.TPS || topology[i, j - 1] == Sample.CPS))
+            if (j != 0 && (topology[i, j - 1] == Sample.Road || topology[i, j - 1] == Sample.TPS || topology[i, j - 1] == Sample.None || topology[i, j - 1] == Sample.CPS))
             {
-                if (topology[i, j - 1] == Sample.TPS && i != 0 && topology[i - 1, j - 1] == Sample.TPS)
-                    res.Add(new Vertice(i - 1, j - 1, topology[i - 1, j - 1]));
-                else
+                if (topology[i, j - 1] != Sample.None)
                     res.Add(new Vertice(i, j - 1, topology[i, j - 1]));
-            }
-            if (j != topology.GetLength(1) - 1 && (topology[i, j + 1] == Sample.Road || topology[i, j + 1] == Sample.TPS || topology[i, j + 1] == Sample.CPS))
-            {
-                if (topology[i, j + 1] == Sample.TPS && i != 0 && topology[i - 1, j + 1] == Sample.TPS)
-                    res.Add(new Vertice(i - 1, j + 1, topology[i - 1, j + 1]));
                 else
+                    res.Add(new Vertice(i - 1, j - 1, topology[i - 1, j - 1]));
+            }
+            if (j != topology.GetLength(1) - 1 && (topology[i, j + 1] == Sample.Road || topology[i, j + 1] == Sample.TPS || topology[i, j + 1] == Sample.None || topology[i, j + 1] == Sample.CPS))
+            {
+                if (topology[i, j + 1] != Sample.None)
                     res.Add(new Vertice(i, j + 1, topology[i, j + 1]));
+                else
+                    res.Add(new Vertice(i - 1, j + 1, topology[i - 1, j + 1]));
             }
             return res;
         }
