@@ -115,6 +115,7 @@ namespace PaidParking3
             this.speedTrackBar.Size = new System.Drawing.Size(232, 45);
             this.speedTrackBar.TabIndex = 3;
             this.speedTrackBar.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.speedTrackBar.Scroll += new System.EventHandler(this.speedTrackBar_Scroll);
             // 
             // label3
             // 

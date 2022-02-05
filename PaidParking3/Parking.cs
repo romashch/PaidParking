@@ -414,26 +414,26 @@ namespace PaidParking3
                 }
             }
 
-            StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
-            for (int i = 0; i < entryWays.Count; i++)
-            {
-                sw.Write(vertices[i] + " | ");
-                for (int j = 0; j < entryWays[i].Count; j++)
-                {
-                    sw.Write(entryWays[i][j] + " ; ");
-                }
-                sw.WriteLine();
-            }
-            for (int i = 0; i < exitWays.Count; i++)
-            {
-                sw.Write(vertices[i] + " | ");
-                for (int j = 0; j < exitWays[i].Count; j++)
-                {
-                    sw.Write(exitWays[i][j] + " ; ");
-                }
-                sw.WriteLine();
-            }
-            sw.Close();
+            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            //for (int i = 0; i < entryWays.Count; i++)
+            //{
+            //    sw.Write(vertices[i] + " | ");
+            //    for (int j = 0; j < entryWays[i].Count; j++)
+            //    {
+            //        sw.Write(entryWays[i][j] + " ; ");
+            //    }
+            //    sw.WriteLine();
+            //}
+            //for (int i = 0; i < exitWays.Count; i++)
+            //{
+            //    sw.Write(vertices[i] + " | ");
+            //    for (int j = 0; j < exitWays[i].Count; j++)
+            //    {
+            //        sw.Write(exitWays[i][j] + " ; ");
+            //    }
+            //    sw.WriteLine();
+            //}
+            //sw.Close();
 
         }
     }
