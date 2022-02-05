@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -10,9 +11,9 @@ namespace PaidParking3
 {
     public partial class MainMenuForm : Form
     {
-        int parkingLength;
-        int parkingWidth;
-        SimulationParameters simulationParameters;
+        public Parking Parking { get; set; }
+
+        public SimulationParameters SimulationParameters { get; set; }
 
         public MainMenuForm()
         {
@@ -42,11 +43,16 @@ namespace PaidParking3
 
         private void simulationButton_Click(object sender, EventArgs e)
         {
-            parkingLength = 20;
-            parkingWidth = 14;
-            SimulationForm form = new SimulationForm(this, parkingLength, parkingWidth);
-            Hide();
-            form.Show();
+            if (Parking != null)
+            {
+                SimulationForm form = new SimulationForm(this);
+                Hide();
+                form.Show();
+            }
+            else
+            {
+                MessageBox.Show("Парковка не задана.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void MainMenuForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -59,13 +65,29 @@ namespace PaidParking3
             ToolStripMenuItem item = (ToolStripMenuItem)e.ClickedItem;
             if (item == aboutProgramToolStripMenuItem)
             {
-
+                //файл справки
             }
             else if (item == aboutDevToolStripMenuItem)
             {
                 AboutDevForm form = new AboutDevForm(this);
                 Hide();
                 form.Show();
+            }
+        }
+
+        private void MainMenuForm_Load(object sender, EventArgs e)
+        {
+            if (File.Exists(Parking.Path))
+            {
+                Parking = Parking.Deserialize();
+            }
+            if (File.Exists(SimulationParameters.Path))
+            {
+                SimulationParameters = SimulationParameters.Deserialize();
+            }
+            else
+            {
+                SimulationParameters = new SimulationParameters();
             }
         }
     }

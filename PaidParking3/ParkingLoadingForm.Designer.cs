@@ -88,6 +88,7 @@ namespace PaidParking3
             this.Name = "ParkingLoadingForm";
             this.Text = "Загрузка парковки";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ParkingLoadingForm_FormClosing);
+            this.Load += new System.EventHandler(this.ParkingLoadingForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

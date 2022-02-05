@@ -7,7 +7,7 @@ using System.Text;
 namespace PaidParking3
 {
     [Serializable]
-    class SimulationParameters
+    public class SimulationParameters
     {
         public const double DayMinPrice = 150;
         public const double DayMaxPrice = 300;

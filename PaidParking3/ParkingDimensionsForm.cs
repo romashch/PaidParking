@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,6 +12,7 @@ namespace PaidParking3
     public partial class ParkingDimensionsForm : Form
     {
         MainMenuForm form;
+        Parking parking;
 
         public ParkingDimensionsForm()
         {
@@ -21,6 +23,7 @@ namespace PaidParking3
         {
             InitializeComponent();
             this.form = form;
+            parking = form.Parking;
         }
 
         private void ParkingDimensionsForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -55,8 +58,16 @@ namespace PaidParking3
 
         private void ParkingDimensionsForm_Load(object sender, EventArgs e)
         {
-            lengthTextBox.Text = "8";
-            widthTextBox.Text = "5";
+            if (parking != null)
+            {
+                lengthTextBox.Text = parking.Length.ToString();
+                widthTextBox.Text = parking.Width.ToString();
+            }
+            else
+            {
+                lengthTextBox.Text = 5.ToString();
+                widthTextBox.Text = 5.ToString();
+            }
         }
     }
 }

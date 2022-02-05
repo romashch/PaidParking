@@ -25,19 +25,11 @@ namespace PaidParking3
         {
             InitializeComponent();
             this.form = form;
+            simulationParameters = form.SimulationParameters;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (File.Exists(SimulationParameters.Path))
-            {
-                simulationParameters = SimulationParameters.Deserialize();
-            }
-            else
-            {
-                simulationParameters = new SimulationParameters();
-                simulationParameters.Serialize();
-            }
             intervalLabel.Text = string.Format("Интервал ({0}-{1})", (int)SimulationParameters.TFIntervalMin, (int)SimulationParameters.TFIntervalMax);
             interval2Label.Text = string.Format("Интервал ({0}-{1})", (int)SimulationParameters.PTIntervalMin, (int)SimulationParameters.PTIntervalMax);
             dayPriceLabel.Text = string.Format("Тариф дневной ({0}-{1})", (int)SimulationParameters.DayMinPrice, (int)SimulationParameters.DayMaxPrice);
@@ -489,6 +481,7 @@ namespace PaidParking3
                 simulationParameters.StartMinute = value2;
             }
             //MessageBox.Show("Параметры моделирования заданы успешно.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            form.SimulationParameters = simulationParameters;
             simulationParameters.Serialize();
             Close();
         }

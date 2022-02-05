@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace PaidParking3
 {
-    class Parking
+    [Serializable]
+    public class Parking
     {
         public enum Sample
         {
@@ -20,6 +23,9 @@ namespace PaidParking3
             Lawn
         }
         Sample[,] topology;
+
+        public Sample[,] Topology { get { return topology; } }
+
         struct Vertice
         {
             public int x;
@@ -37,6 +43,28 @@ namespace PaidParking3
         {
             this.topology = topology;
         }
+
+        public Parking(List<Cell> cells)
+        {
+            int maxY = 5;
+            int maxX = 5;
+            foreach (Cell cell in cells)
+            {
+                if (cell.X > maxX)
+                    maxX = cell.X;
+                if (cell.Y > maxY)
+                    maxY = cell.Y;
+            }
+            topology = new Sample[maxX + 1, maxY + 1];
+            foreach (Cell cell in cells)
+            {
+                topology[cell.X, cell.Y] = (Sample)cell.Sample;
+            }
+        }
+
+        public int Length { get { return topology.GetLength(1); } }
+
+        public int Width { get { return topology.GetLength(0); } }
 
         public static Parking Validation(Sample[,] topology)
         {
@@ -255,6 +283,55 @@ namespace PaidParking3
                     res.Add(new Vertice(i - 1, j + 1, topology[i - 1, j + 1]));
             }
             return res;
+        }
+
+        public void AddParking(string name)
+        {
+            using (DatabaseContext db = new DatabaseContext())
+            {
+                int k = 0;
+                while (k < db.Cells.Count() && !db.Cells.ToList()[k].ParkingName.Equals(name))
+                {
+                    k++;
+                }
+                if (k < db.Cells.Count())
+                    throw new ArgumentException("Парковка с таким названием уже существует.");
+                for (int i = 0; i < topology.GetLength(0); i++)
+                {
+                    for (int j = 0; j < topology.GetLength(1); j++)
+                    {
+                        db.Cells.Add(new Cell(name, i, j, (int)topology[i, j]));
+                    }
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public const string Path = @"parking.dat";
+
+        public void Serialize()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, this);
+            }
+        }
+
+        public static Parking Deserialize()
+        {
+            if (File.Exists(Path))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
+                {
+                    return (Parking)formatter.Deserialize(fs);
+                }
+            }
+            else
+            {
+                throw new FileNotFoundException();
+            }
         }
     }
 }

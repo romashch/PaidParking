@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using static PaidParking3.Parking;
@@ -19,6 +20,8 @@ namespace PaidParking3
         Sample[,] topology;
         Sample current;
 
+        Parking parking;
+
         public ParkingCreationForm()
         {
             InitializeComponent();
@@ -31,6 +34,19 @@ namespace PaidParking3
             this.form2 = form2;
             this.length = length;
             this.width = width;
+            parking = form.Parking;
+            if (parking != null && length == parking.Length && width == parking.Width)
+            {
+                topology = parking.Topology;
+            }
+            else
+            {
+                parking = null;
+                topology = new Sample[width, length];
+                for (int i = 0; i < topology.GetLength(0); i++)
+                    for (int j = 0; j < topology.GetLength(1); j++)
+                        topology[i, j] = Sample.Road;
+            }
         }
 
         private void ParkingCreationForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -45,7 +61,7 @@ namespace PaidParking3
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            Parking? parking = Validation(topology);
+            parking = Validation(topology);
             if (parking == null)
             {
                 MessageBox.Show("Некорректная парковка.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -55,6 +71,8 @@ namespace PaidParking3
             {
                 MessageBox.Show("Парковка успешно сохранена.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 saveToDBButton.Enabled = true;
+                form.Parking = parking;
+                parking.Serialize();
             }
         }
 
@@ -63,6 +81,13 @@ namespace PaidParking3
             DialogResult result = MessageBox.Show("Вы уверены, что хотите очистить поле конструирования парковки?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
             {
+                saveToDBButton.Enabled = false;
+                entryPictureBox.Image = Properties.Resources.entry;
+                entryPictureBox.MouseDown += new MouseEventHandler(PictureBox_MouseDown);
+                exitPictureBox.Image = Properties.Resources.exit;
+                exitPictureBox.MouseDown += new MouseEventHandler(PictureBox_MouseDown);
+                ticketOfficePictureBox.Image = Properties.Resources.ticketOffice;
+                ticketOfficePictureBox.MouseDown += new MouseEventHandler(PictureBox_MouseDown);
                 foreach (PictureBox pictureBox in pictureBoxes)
                 {
                     if (pictureBox.Size == new Size(45, 90))
@@ -72,7 +97,7 @@ namespace PaidParking3
                     pictureBox.Image = null;
                     topology[pictureBox.Location.Y / 45, pictureBox.Location.X / 45] = Sample.Road;
                 }
-            }            
+            }
         }
 
         private void backToDimensionsButton_Click(object sender, EventArgs e)
@@ -90,7 +115,7 @@ namespace PaidParking3
 
         private void saveToDBButton_Click(object sender, EventArgs e)
         {
-            SaveToDBForm form3 = new SaveToDBForm();
+            SaveToDBForm form3 = new SaveToDBForm(parking);
             form3.ShowDialog();
         }
 
@@ -105,18 +130,64 @@ namespace PaidParking3
                 Height = fieldPictureBox.Height + 39;
             }
             createPictureBoxesArray();
-            saveToDBButton.Enabled = false;
+            if (parking != null)
+            {
+                drawParking();
+                saveToDBButton.Enabled = true;
+            }
+            else
+                saveToDBButton.Enabled = false;
+        }
+
+        private void drawParking()
+        {
+            for (int i = 0; i < topology.GetLength(0); i++)
+            {
+                for (int j = 0; j < topology.GetLength(1); j++)
+                {
+                    if (topology[i, j] == Sample.TPS)
+                    {
+                        pictureBoxes[i, j].Size = new Size(45, 90);
+                        pictureBoxes[i, j].Image = Properties.Resources.TPS;
+                    }
+                    else if (topology[i, j] == Sample.Entry)
+                    {
+                        pictureBoxes[i, j].Image = Properties.Resources.entry;
+                        entryPictureBox.Image = null;
+                        entryPictureBox.MouseDown -= new MouseEventHandler(PictureBox_MouseDown);
+                    }
+                    else if (topology[i, j] == Sample.Exit)
+                    {
+                        pictureBoxes[i, j].Image = Properties.Resources.exit;
+                        exitPictureBox.Image = null;
+                        exitPictureBox.MouseDown -= new MouseEventHandler(PictureBox_MouseDown);
+                    }
+                    else if (topology[i, j] == Sample.TicketOffice)
+                    {
+                        pictureBoxes[i, j].Image = Properties.Resources.ticketOffice;
+                        ticketOfficePictureBox.Image = null;
+                        ticketOfficePictureBox.MouseDown -= new MouseEventHandler(PictureBox_MouseDown);
+                    }
+                    else if (topology[i, j] == Sample.CPS)
+                    {
+                        pictureBoxes[i, j].Image = Properties.Resources.CPS;
+                    }
+                    else if (topology[i, j] == Sample.Lawn)
+                    {
+                        pictureBoxes[i, j].Image = Properties.Resources.lawn;
+                    }
+                    ticketOfficePictureBox.MouseDown += new MouseEventHandler(PictureBox_MouseDown);
+                }
+            }
         }
 
         private void createPictureBoxesArray()
         {
             pictureBoxes = new PictureBox[width, length];
-            topology = new Sample[width, length];
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < length; j++)
                 {
-                    topology[i, j] = Sample.Road;
                     pictureBoxes[i, j] = new PictureBox();
                     pictureBoxes[i, j].Location = new Point(j * 45, i * 45);
                     pictureBoxes[i, j].Size = new Size(45, 45);
@@ -168,7 +239,7 @@ namespace PaidParking3
             Sample deleteSample = topology[pictureBox.Location.Y / 45, pictureBox.Location.X / 45];
             Image getImage = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
             if (deleteSample == Sample.TPS)
-            {               
+            {
                 pictureBox.Size = new Size(45, 45);
                 topology[pictureBox.Location.Y / 45 + 1, pictureBox.Location.X / 45] = Sample.Road;
             }
@@ -213,10 +284,12 @@ namespace PaidParking3
             }
             pictureBox.Image = getImage;
             topology[pictureBox.Location.Y / 45, pictureBox.Location.X / 45] = current;
+            saveToDBButton.Enabled = false;
         }
 
         private void PictureBox_DoubleClick(object sender, EventArgs e)
         {
+            saveToDBButton.Enabled = false;
             PictureBox pictureBox = (PictureBox)sender;
             Sample deleteSample = topology[pictureBox.Location.Y / 45, pictureBox.Location.X / 45];
             if (deleteSample == Sample.TPS)
