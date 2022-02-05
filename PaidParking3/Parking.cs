@@ -24,15 +24,23 @@ namespace PaidParking3
         }
         Sample[,] topology;
 
-        [NonSerialized]
-        static List<List<Vertice>> entryWays;
+        static List<Vertice> vertices = new List<Vertice>();
+        
+        static List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
 
         [NonSerialized]
-        static List<List<Vertice>> exitWays;
+        List<List<Vertice>> entryWays;
+
+        [NonSerialized]
+        List<List<Vertice>> exitWays;
+
+        public List<List<Vertice>> EntryWays { get { return entryWays; } }
+
+        public List<List<Vertice>> ExitWays { get { return exitWays; } }
 
         public Sample[,] Topology { get { return topology; } }
 
-        struct Vertice
+        public struct Vertice
         {
             public int x;
             public int y;
@@ -126,17 +134,13 @@ namespace PaidParking3
             {
                 return null;
             }
-            else
-            {
-                DijkstrasAlgorithmWithWays(topology);
-            }
             return new Parking(topology);
         }
 
         private static bool DijkstrasAlgorithm(Sample[,] topology)
         {
-            List<Vertice> vertices = new List<Vertice>();
-            List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
+            vertices = new List<Vertice>();
+            adjacencyList = new List<List<Vertice>>();
             GraphFormation(topology, out vertices, out adjacencyList);
 
             //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
@@ -352,11 +356,8 @@ namespace PaidParking3
             }
         }
 
-        public static void DijkstrasAlgorithmWithWays(Sample[,] topology)
+        public void DijkstrasAlgorithmWithWays()
         {
-            List<Vertice> vertices = new List<Vertice>();
-            List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
-            GraphFormation(topology, out vertices, out adjacencyList);
             int[] d = new int[vertices.Count];
             bool[] u = new bool[vertices.Count];
             Vertice[] p = new Vertice[vertices.Count];
@@ -413,26 +414,26 @@ namespace PaidParking3
                 }
             }
 
-            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
-            //for (int i = 0; i < entryWays.Count; i++)
-            //{
-            //    sw.Write(vertices[i] + " | ");
-            //    for (int j = 0; j < entryWays[i].Count; j++)
-            //    {
-            //        sw.Write(entryWays[i][j] + " ; ");
-            //    }
-            //    sw.WriteLine();
-            //}
-            //for (int i = 0; i < exitWays.Count; i++)
-            //{
-            //    sw.Write(vertices[i] + " | ");
-            //    for (int j = 0; j < exitWays[i].Count; j++)
-            //    {
-            //        sw.Write(exitWays[i][j] + " ; ");
-            //    }
-            //    sw.WriteLine();
-            //}
-            //sw.Close();
+            StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            for (int i = 0; i < entryWays.Count; i++)
+            {
+                sw.Write(vertices[i] + " | ");
+                for (int j = 0; j < entryWays[i].Count; j++)
+                {
+                    sw.Write(entryWays[i][j] + " ; ");
+                }
+                sw.WriteLine();
+            }
+            for (int i = 0; i < exitWays.Count; i++)
+            {
+                sw.Write(vertices[i] + " | ");
+                for (int j = 0; j < exitWays[i].Count; j++)
+                {
+                    sw.Write(exitWays[i][j] + " ; ");
+                }
+                sw.WriteLine();
+            }
+            sw.Close();
 
         }
     }

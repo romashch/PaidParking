@@ -73,6 +73,7 @@ namespace PaidParking3
                 saveToDBButton.Enabled = true;
                 form.Parking = parking;
                 parking.Serialize();
+                parking.DijkstrasAlgorithmWithWays();
             }
         }
 
