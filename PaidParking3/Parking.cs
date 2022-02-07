@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PaidParking3
 {
@@ -311,21 +313,28 @@ namespace PaidParking3
         {
             using (DatabaseContext db = new DatabaseContext())
             {
-                int k = 0;
-                while (k < db.Cells.Count() && !db.Cells.ToList()[k].ParkingName.Equals(name))
+                if (ParkingLoadingForm.IsDBConnection(db))
                 {
-                    k++;
-                }
-                if (k < db.Cells.Count())
-                    throw new ArgumentException("Парковка с таким названием уже существует.");
-                for (int i = 0; i < topology.GetLength(0); i++)
-                {
-                    for (int j = 0; j < topology.GetLength(1); j++)
+                    int k = 0;
+                    while (k < db.Cells.Count() && !db.Cells.ToList()[k].ParkingName.Equals(name))
                     {
-                        db.Cells.Add(new Cell(name, i, j, (int)topology[i, j]));
+                        k++;
                     }
+                    if (k < db.Cells.Count())
+                        throw new ArgumentException("Парковка с таким названием уже существует.");
+                    for (int i = 0; i < topology.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < topology.GetLength(1); j++)
+                        {
+                            db.Cells.Add(new Cell(name, i, j, (int)topology[i, j]));
+                        }
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+                else
+                {
+                    MessageBox.Show("Нет соединения с базой данных.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

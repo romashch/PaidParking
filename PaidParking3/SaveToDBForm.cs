@@ -32,7 +32,6 @@ namespace PaidParking3
         private void saveButton_Click(object sender, EventArgs e)
         {
             string name = textBox1.Text.Trim();
-            //проверить на уникальность имени
             if (name.Length > 0)
             {
                 try

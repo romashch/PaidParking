@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.EntityFrameworkCore;
 
 namespace PaidParking3
 {
@@ -57,13 +58,34 @@ namespace PaidParking3
         {
             using (DatabaseContext db = new DatabaseContext())
             {
-                HashSet<string> parkings = new HashSet<string>();
-                foreach (Cell cell in db.Cells)
+                if (IsDBConnection(db))
                 {
-                    parkings.Add(cell.ParkingName);
+                    HashSet<string> parkings = new HashSet<string>();
+                    foreach (Cell cell in db.Cells)
+                    {
+                        parkings.Add(cell.ParkingName);
+                    }
+                    listBox1.Items.Clear();
+                    listBox1.Items.AddRange(parkings.ToArray());
                 }
-                listBox1.Items.Clear();
-                listBox1.Items.AddRange(parkings.ToArray());
+                else
+                {
+                    MessageBox.Show("Нет соединения с базой данных.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public static bool IsDBConnection(DatabaseContext dbContext)
+        {
+            try
+            {
+                dbContext.Database.OpenConnection();
+                dbContext.Database.CloseConnection();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

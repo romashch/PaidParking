@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,6 +13,8 @@ namespace PaidParking3
 {
     public partial class MainMenuForm : Form
     {
+        public const string PathHelpFile = @"aboutSystem.html";
+
         public Parking Parking { get; set; }
 
         public SimulationParameters SimulationParameters { get; set; }
@@ -65,13 +69,34 @@ namespace PaidParking3
             ToolStripMenuItem item = (ToolStripMenuItem)e.ClickedItem;
             if (item == aboutProgramToolStripMenuItem)
             {
-                //файл справки
+                OpenHelpFile();
             }
             else if (item == aboutDevToolStripMenuItem)
             {
                 AboutDevForm form = new AboutDevForm(this);
                 Hide();
                 form.Show();
+            }
+        }
+
+        public static void OpenHelpFile()
+        {
+            if (File.Exists(PathHelpFile))
+            {
+                try
+                {
+                    Process p = Process.Start(new ProcessStartInfo(PathHelpFile) { UseShellExecute = true });
+                    if (p == null)
+                        throw new Exception();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Файл справки повреждён.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Файл справки не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

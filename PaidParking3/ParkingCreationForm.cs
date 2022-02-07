@@ -56,7 +56,7 @@ namespace PaidParking3
 
         private void aboutProgramButton_Click(object sender, EventArgs e)
         {
-            //файл справки
+            MainMenuForm.OpenHelpFile();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
