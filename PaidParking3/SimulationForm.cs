@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
-using Timer = System.Threading.Timer;
+using Timer = System.Timers.Timer;
 
 namespace PaidParking3
 {
@@ -16,10 +16,14 @@ namespace PaidParking3
         Parking parking;
         SimulationParameters simulationParameters;
         PictureBox[,] pictureBoxes;
-        int tick_interval_ms;
-        const int Standart_tick_interval_ms = 100;
-        int timeH, timeM;
+        int ticks;
+        const int StandartInterval = 8;
+        const int TickInMinute = 50;
+        ModelTime modelTime;
         int revenue;
+        Timer timer;
+        int curIntervalTF;
+        List<Car> cars;
 
         public SimulationForm()
         {
@@ -30,42 +34,83 @@ namespace PaidParking3
         {
             InitializeComponent();
             this.form = form;
-            this.parking = form.Parking;
-            this.simulationParameters = form.SimulationParameters;
-            tick_interval_ms = Standart_tick_interval_ms;
-            TimerCallback timerCallback = new TimerCallback(TimerTick);
-            Timer timer = new Timer(timerCallback, null, 0, tick_interval_ms);
+            parking = form.Parking;
+            parking.DijkstrasAlgorithmWithWays();
+            parking.GetPS();
+            simulationParameters = form.SimulationParameters;
+            timer = new Timer();
+            timer.Interval = StandartInterval;
+            timer.Elapsed += TimerTick;
             revenue = 0;
-            timeH = simulationParameters.StartHour;
-            timeM = simulationParameters.StartMinute;
+            modelTime = new ModelTime(simulationParameters.StartHour, simulationParameters.StartMinute);
+            SetCarSpawnInterval();
+            cars = new List<Car>();
+            timer.Start();
         }
 
-        private void TimerTick(object obj)
+        private void SetCarSpawnInterval()
         {
-            
+            if (simulationParameters.TrafficFlowType == SimulationParameters.DetRan.Deterministic)
+            {
+                curIntervalTF = (int)simulationParameters.Interval2;
+            }
+            else
+                switch (simulationParameters.Law)
+                {
+                    case SimulationParameters.DistributionLaw.Normal:
+                        {
+                            curIntervalTF = RandomNormal(simulationParameters.Mx, simulationParameters.Dx);
+                            break;
+                        }
+                    case SimulationParameters.DistributionLaw.Uniform:
+                        {
+                            curIntervalTF = RandomUniform(simulationParameters.Min, simulationParameters.Max);
+                            break;
+                        }
+                    case SimulationParameters.DistributionLaw.Exponential:
+                        {
+                            curIntervalTF = RandomExp(simulationParameters.Lambda);
+                            break;
+                        }
+                }
         }
 
-        private int RandomUniform(int min, int max)
+        private void TimerTick(object? sender, ElapsedEventArgs e)
+        {
+            foreach (Car c in cars)
+                c.Motion();
+            if (ticks % TickInMinute == 0)
+            {
+                modelTime++;
+            }
+            ticks++;
+        }
+
+        public static int RandomUniform(double min, double max)
         {
             return (int)(new Random().NextDouble() * (max - min) + min);
         }
 
-        private int RandomExp(int lambda)
+        public static int RandomExp(double lambda)
         {
             return (int)(-Math.Log(1 - new Random().NextDouble()) / lambda);
         }
 
-        private int RandomNormal(int mx, int dx)
+        public static int RandomNormal(double mx, double dx)
         {
-            double x, y, s;
+            double x, y, s, z;
             do
             {
-                x = new Random().NextDouble() * 2 - 1;
-                y = new Random().NextDouble() * 2 - 1;
-                s = Math.Sqrt(x * x + y * y);
+                do
+                {
+                    x = new Random().NextDouble() * 2 - 1;
+                    y = new Random().NextDouble() * 2 - 1;
+                    s = Math.Sqrt(x * x + y * y);
+                }
+                while (s > 1 || s == 0);
+                z = x * Math.Sqrt(-2 * Math.Log(s) / s);
             }
-            while (s > 1 || s == 0);
-            double z = x * Math.Sqrt(-2 * Math.Log(s) / s);
+            while (z <= 0);
             return (int)(z * Math.Sqrt(dx) + mx);
         }
 
@@ -76,12 +121,10 @@ namespace PaidParking3
             Width = 260 + 16 + fieldPictureBox.Width;
             Height = 532;
             if (Height < fieldPictureBox.Height)
-            {
                 Height = fieldPictureBox.Height;
-            }
             createPictureBoxesArray();
             revenueLabel.Text = "Выручка: " + revenue;
-            timeLabel.Text = string.Format("Время: {0:d2}:{1:d2}", timeH, timeM);
+            timeLabel.Text = "Время: " + modelTime;
         }
 
         private void createPictureBoxesArray()
@@ -99,38 +142,38 @@ namespace PaidParking3
                     pictureBoxes[i, j].Size = new Size(45, 45);
                     switch (parking.Topology[i, j])
                     {
-                        case Parking.Sample.TPS:
+                        case Sample.TPS:
                             {
                                 pictureBoxes[i, j].Size = new Size(45, 90);
                                 pictureBoxes[i, j].Image = Properties.Resources.TPS;
                                 break;
                             }
-                        case Parking.Sample.CPS:
+                        case Sample.CPS:
                             {
                                 pictureBoxes[i, j].Image = Properties.Resources.CPS;
                                 break;
                             }
-                        case Parking.Sample.Road:
+                        case Sample.Road:
                             {
                                 pictureBoxes[i, j].Image = Properties.Resources.road;
                                 break;
                             }
-                        case Parking.Sample.Entry:
+                        case Sample.Entry:
                             {
                                 pictureBoxes[i, j].Image = Properties.Resources.entry;
                                 break;
                             }
-                        case Parking.Sample.Exit:
+                        case Sample.Exit:
                             {
                                 pictureBoxes[i, j].Image = Properties.Resources.exit;
                                 break;
                             }
-                        case Parking.Sample.TicketOffice:
+                        case Sample.TicketOffice:
                             {
                                 pictureBoxes[i, j].Image = Properties.Resources.ticketOffice;
                                 break;
                             }
-                        case Parking.Sample.Lawn:
+                        case Sample.Lawn:
                             {
                                 pictureBoxes[i, j].Image = Properties.Resources.lawn;
                                 break;
@@ -148,12 +191,12 @@ namespace PaidParking3
 
         private void startButton_Click(object sender, EventArgs e)
         {
-
+            timer.Start();
         }
 
         private void pauseButton_Click(object sender, EventArgs e)
         {
-
+            timer.Stop();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
@@ -163,7 +206,7 @@ namespace PaidParking3
 
         private void speedTrackBar_Scroll(object sender, EventArgs e)
         {
-            tick_interval_ms = (int)(Standart_tick_interval_ms / Math.Pow(2, speedTrackBar.Value));
+            timer.Interval = (int)(StandartInterval / Math.Pow(2, speedTrackBar.Value));
         }
     }
 }

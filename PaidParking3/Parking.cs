@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 
 namespace PaidParking3
@@ -13,17 +14,6 @@ namespace PaidParking3
     [Serializable]
     public class Parking
     {
-        public enum Sample
-        {
-            None,
-            Road,
-            TPS,
-            CPS,
-            Entry,
-            Exit,
-            TicketOffice,
-            Lawn
-        }
         Sample[,] topology;
 
         static List<Vertice> vertices = new List<Vertice>();
@@ -36,28 +26,16 @@ namespace PaidParking3
         [NonSerialized]
         List<List<Vertice>> exitWays;
 
+        [NonSerialized]
+        Dictionary<int, Vertice> ps;
+
         public List<List<Vertice>> EntryWays { get { return entryWays; } }
 
         public List<List<Vertice>> ExitWays { get { return exitWays; } }
 
-        public Sample[,] Topology { get { return topology; } }
+        public Dictionary<int, Vertice> PS { get { return ps; } }
 
-        public struct Vertice
-        {
-            public int x;
-            public int y;
-            public Sample s;
-            public Vertice(int x, int y, Sample s)
-            {
-                this.x = x;
-                this.y = y;
-                this.s = s;
-            }
-            public override string ToString()
-            {
-                return x + " " + y;
-            }
-        }
+        public Sample[,] Topology { get { return topology; } }
 
         public Parking(Sample[,] topology)
         {
@@ -416,10 +394,17 @@ namespace PaidParking3
                         for (Vertice v = vertices[i]; !v.Equals(vertices[startIndex]); v = p[vertices.IndexOf(v)])
                             cur.Add(v);
                         cur.Add(vertices[startIndex]);
-                        cur.Reverse();
                     }
-                    if (k == 0) entryWays.Add(cur);
-                    else exitWays.Add(cur);
+                    if (k == 0)
+                    {
+                        cur.Reverse();
+                        entryWays.Add(cur);
+                    }
+                    else
+                    {
+                        cur.RemoveAt(0);
+                        exitWays.Add(cur);
+                    }
                 }
             }
 
@@ -444,6 +429,23 @@ namespace PaidParking3
             //}
             //sw.Close();
 
+        }
+
+        public void GetPS()
+        {
+            ps = new Dictionary<int, Vertice>();
+            int k = 0;
+            for (int i = 0; i < topology.GetLength(0); i++)
+            {
+                for (int j = 0; j < topology.GetLength(1); j++)
+                {
+                    if (topology[i, j] == Sample.CPS || topology[i, j] == Sample.TPS)
+                    {
+                        ps.Add(k, new Vertice(i, j, topology[i, j]));
+                        k++;
+                    }
+                }
+            }
         }
     }
 }
