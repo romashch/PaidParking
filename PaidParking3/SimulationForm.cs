@@ -20,7 +20,7 @@ namespace PaidParking3
         const int StandartInterval = 8;
         const int TickInMinute = 50;
         ModelTime modelTime;
-        int revenue;
+        double revenue;
         Timer timer;
         int curIntervalTF;
         List<Car> cars;
@@ -45,7 +45,6 @@ namespace PaidParking3
             modelTime = new ModelTime(simulationParameters.StartHour, simulationParameters.StartMinute);
             SetCarSpawnInterval();
             cars = new List<Car>();
-            timer.Start();
         }
 
         private void SetCarSpawnInterval()
@@ -77,11 +76,32 @@ namespace PaidParking3
 
         private void TimerTick(object? sender, ElapsedEventArgs e)
         {
-            foreach (Car c in cars)
-                c.Motion();
             if (ticks % TickInMinute == 0)
             {
                 modelTime++;
+                timeLabel.Invoke((MethodInvoker)delegate {
+                    timeLabel.Text = "Время: " + modelTime;
+                });
+                curIntervalTF--;
+            }
+            if (curIntervalTF == 0)
+            {
+                cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
+                SetCarSpawnInterval();
+            }
+            foreach (Car c in cars)
+            {
+                Car.State state = c.Motion(modelTime);
+                if (state == Car.State.Finish)
+                {
+                    cars.Remove(c);
+                }
+                else if (state == Car.State.Parked)
+                {
+                    dataGridView1.Rows.Add(c.CheckInTime, c.CheckOutTime, c.Cost);
+                    revenue += c.Cost;
+                    revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
+                }
             }
             ticks++;
         }
@@ -123,8 +143,9 @@ namespace PaidParking3
             if (Height < fieldPictureBox.Height)
                 Height = fieldPictureBox.Height;
             createPictureBoxesArray();
-            revenueLabel.Text = "Выручка: " + revenue;
+            revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
             timeLabel.Text = "Время: " + modelTime;
+            timer.Start();
         }
 
         private void createPictureBoxesArray()
@@ -186,6 +207,7 @@ namespace PaidParking3
 
         private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            timer.Stop();
             form.Show();
         }
 
@@ -201,6 +223,7 @@ namespace PaidParking3
 
         private void stopButton_Click(object sender, EventArgs e)
         {
+            timer.Stop();
             Close();
         }
 

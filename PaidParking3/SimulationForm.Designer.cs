@@ -186,6 +186,7 @@ namespace PaidParking3
             // fieldPictureBox
             // 
             this.fieldPictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.fieldPictureBox.BackgroundImage = global::PaidParking3.Properties.Resources.road;
             this.fieldPictureBox.Location = new System.Drawing.Point(260, 0);
             this.fieldPictureBox.Name = "fieldPictureBox";
             this.fieldPictureBox.Size = new System.Drawing.Size(225, 225);

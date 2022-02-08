@@ -16,9 +16,9 @@ namespace PaidParking3
     {
         Sample[,] topology;
 
-        static List<Vertice> vertices = new List<Vertice>();
-        
-        static List<List<Vertice>> adjacencyList = new List<List<Vertice>>();
+        static List<Vertice> vertices;
+
+        static List<List<Vertice>> adjacencyList;
 
         [NonSerialized]
         List<List<Vertice>> entryWays;
@@ -334,7 +334,15 @@ namespace PaidParking3
                 BinaryFormatter formatter = new BinaryFormatter();
                 using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
                 {
-                    return (Parking)formatter.Deserialize(fs);
+                    try
+                    {
+                        Parking p = (Parking)formatter.Deserialize(fs);
+                        return p;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             }
             else
@@ -345,6 +353,10 @@ namespace PaidParking3
 
         public void DijkstrasAlgorithmWithWays()
         {
+            vertices = new List<Vertice>();
+            adjacencyList = new List<List<Vertice>>();
+            GraphFormation(topology, out vertices, out adjacencyList);
+
             int[] d = new int[vertices.Count];
             bool[] u = new bool[vertices.Count];
             Vertice[] p = new Vertice[vertices.Count];
@@ -388,46 +400,46 @@ namespace PaidParking3
                 }
                 for (int i = 0; i < p.Length; i++)
                 {
-                    List<Vertice> cur = new List<Vertice>();
                     if (vertices[i].s == Sample.TPS || vertices[i].s == Sample.CPS)
                     {
+                        List<Vertice> cur = new List<Vertice>();
                         for (Vertice v = vertices[i]; !v.Equals(vertices[startIndex]); v = p[vertices.IndexOf(v)])
                             cur.Add(v);
                         cur.Add(vertices[startIndex]);
-                    }
-                    if (k == 0)
-                    {
-                        cur.Reverse();
-                        entryWays.Add(cur);
-                    }
-                    else
-                    {
-                        cur.RemoveAt(0);
-                        exitWays.Add(cur);
+                        if (k == 0)
+                        {
+                            cur.Reverse();
+                            entryWays.Add(cur);
+                        }
+                        else
+                        {
+                            cur.RemoveAt(0);
+                            exitWays.Add(cur);
+                        }
                     }
                 }
             }
 
-            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
-            //for (int i = 0; i < entryWays.Count; i++)
-            //{
-            //    sw.Write(vertices[i] + " | ");
-            //    for (int j = 0; j < entryWays[i].Count; j++)
-            //    {
-            //        sw.Write(entryWays[i][j] + " ; ");
-            //    }
-            //    sw.WriteLine();
-            //}
-            //for (int i = 0; i < exitWays.Count; i++)
-            //{
-            //    sw.Write(vertices[i] + " | ");
-            //    for (int j = 0; j < exitWays[i].Count; j++)
-            //    {
-            //        sw.Write(exitWays[i][j] + " ; ");
-            //    }
-            //    sw.WriteLine();
-            //}
-            //sw.Close();
+            StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            for (int i = 0; i < entryWays.Count; i++)
+            {
+                sw.Write(vertices[i] + " | ");
+                for (int j = 0; j < entryWays[i].Count; j++)
+                {
+                    sw.Write(entryWays[i][j] + " ; ");
+                }
+                sw.WriteLine();
+            }
+            for (int i = 0; i < exitWays.Count; i++)
+            {
+                sw.Write(vertices[i] + " | ");
+                for (int j = 0; j < exitWays[i].Count; j++)
+                {
+                    sw.Write(exitWays[i][j] + " ; ");
+                }
+                sw.WriteLine();
+            }
+            sw.Close();
 
         }
 

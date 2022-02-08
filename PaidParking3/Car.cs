@@ -9,12 +9,15 @@ namespace PaidParking3
 {
     class Car
     {
-        bool isParked;
+        bool isGoingToParking;
         bool isTruck;
         int numOfPS;
         List<Vertice> way;
         ModelTime checkInTime;
+        public ModelTime CheckInTime { get { return checkInTime; } }
         ModelTime checkOutTime;
+        public ModelTime CheckOutTime { get { return checkOutTime; } }
+
         int parkingTime;
         PictureBox pictureBox;
         enum Direction
@@ -25,25 +28,40 @@ namespace PaidParking3
             Right
         }
         Direction direction;
+        double cost;
+        public double Cost { get { return cost; } }
+
+        double dayTariff;
+        double nightTariff;
+        public enum State
+        {
+            Motion,
+            Parked,
+            Finish
+        }
+        State state;
 
         public Car(Parking parking, SimulationParameters simulationParameters, PictureBox fieldPictureBox)
         {
-            isParked = new Random().NextDouble() < (simulationParameters.EnteringProbability);
-            if (isParked)
+            isGoingToParking = new Random().NextDouble() < (simulationParameters.EnteringProbability);
+            if (isGoingToParking)
             {
                 numOfPS = new Random().Next(0, parking.PS.Count);
                 SetParkingTime(simulationParameters);
-                checkOutTime = checkInTime + parkingTime;
             }
             SetWay(parking);
             SetPictureBox(parking, simulationParameters, fieldPictureBox);
             direction = Direction.Left;
+            state = State.Motion;
+            dayTariff = simulationParameters.DayTariffPrice;
+            nightTariff = simulationParameters.NightTariffPrice;
         }
 
         private void SetWay(Parking parking)
         {
+            way = new List<Vertice>();
             int i;
-            if (isParked) {
+            if (isGoingToParking) {
                 for (i = parking.Length - 1; i >= parking.EntryWays[numOfPS][0].y; i--)
                     way.Add(new Vertice(parking.Width, i, Sample.Road));
                 way.AddRange(parking.EntryWays[numOfPS]);
@@ -79,7 +97,9 @@ namespace PaidParking3
             pictureBox.BackgroundImage = null;
             pictureBox.BackColor = Color.FromArgb(0, 0, 0, 0);
             pictureBox.Refresh();
-            fieldPictureBox.Controls.Add(pictureBox); 
+            fieldPictureBox.Invoke((MethodInvoker)delegate {
+                fieldPictureBox.Controls.Add(pictureBox); 
+            });
         }
 
         private void SetParkingTime(SimulationParameters simulationParameters)
@@ -168,15 +188,34 @@ namespace PaidParking3
             pictureBox.Refresh();
         }
         
-        public void Motion()
+        public State Motion(ModelTime mt)
         {
+            if (state == State.Parked && checkOutTime == mt)
+            {
+                state = State.Motion;
+            }
+            else
+            {
+                return state;
+            }
             if (pictureBox.Location.X % 45 == 0 || pictureBox.Location.Y % 45 == 0)
             {
+
+                if (way[0].s == Sample.CPS || way[0].s == Sample.TPS)
+                {
+                    state = State.Parked;
+                    checkInTime = mt;
+                    checkOutTime = checkInTime + parkingTime;
+                    GetCost();
+                    way.RemoveAt(0);
+                    return state;
+                }
                 way.RemoveAt(0);
                 if (way.Count == 0)
                 {
                     pictureBox.Dispose();
-                    return;
+                    state = State.Finish;
+                    return state;
                 }
                 ChangeDirection();
             }
@@ -202,6 +241,22 @@ namespace PaidParking3
                         pictureBox.Location = new Point(pictureBox.Location.X + 1, pictureBox.Location.Y);
                         break;
                     }
+            }
+            return state;
+        }
+
+        public void GetCost()
+        {
+            cost = 0;
+            cost += (int)Math.Floor((double)parkingTime / 1440) * (8 * nightTariff + 16 * dayTariff);
+            ModelTime mt = checkInTime;
+            while (mt != checkOutTime)
+            {
+                if (!mt.IsNight())
+                    cost += dayTariff / 60;
+                else
+                    cost += nightTariff / 60;
+                mt++;
             }
         }
     }

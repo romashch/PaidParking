@@ -169,7 +169,15 @@ namespace PaidParking3
                 {
                     var ser = new DataContractJsonSerializer(typeof(SimulationParameters));
                     fstream.Position = 0;
-                    return (SimulationParameters)ser.ReadObject(fstream);
+                    try
+                    {
+                        SimulationParameters sp = (SimulationParameters)ser.ReadObject(fstream);
+                        return sp;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             }
             else
