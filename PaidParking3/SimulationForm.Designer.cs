@@ -190,6 +190,7 @@ namespace PaidParking3
             this.fieldPictureBox.Location = new System.Drawing.Point(260, 0);
             this.fieldPictureBox.Name = "fieldPictureBox";
             this.fieldPictureBox.Size = new System.Drawing.Size(225, 225);
+            this.fieldPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.fieldPictureBox.TabIndex = 11;
             this.fieldPictureBox.TabStop = false;
             // 

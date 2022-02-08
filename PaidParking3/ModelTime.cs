@@ -17,14 +17,18 @@ namespace PaidParking3
 
         public void Tick()
         {
-            if (minutes == 59) hours = (hours == 23) ? 0 : hours + 1;
+            if (minutes == 59)
+            {
+                hours = (hours == 23) ? 0 : hours + 1;
+                minutes = 0;
+            }
             else minutes++;
         }
 
-        public void Tick(int minutes)
+        public void Tick(int m)
         {
-            minutes = minutes % 60;
-            hours = (hours + (int)Math.Floor((double)(minutes / 60))) % 24;
+            hours = (hours + (int)Math.Floor((double)((minutes + m) / 60))) % 24;
+            minutes = (minutes + m) % 60;
         }
 
         public static ModelTime operator +(ModelTime mt1, int mt2)

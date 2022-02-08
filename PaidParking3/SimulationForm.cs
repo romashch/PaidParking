@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Timers;
 using System.Windows.Forms;
-using Timer = System.Timers.Timer;
+using Timer = System.Windows.Forms.Timer;
 
 namespace PaidParking3
 {
@@ -15,7 +15,6 @@ namespace PaidParking3
         MainMenuForm form;
         Parking parking;
         SimulationParameters simulationParameters;
-        PictureBox[,] pictureBoxes;
         int ticks;
         const int StandartInterval = 8;
         const int TickInMinute = 50;
@@ -38,9 +37,10 @@ namespace PaidParking3
             parking.DijkstrasAlgorithmWithWays();
             parking.GetPS();
             simulationParameters = form.SimulationParameters;
-            timer = new Timer();
+            timer = new Timer(components);
+            timer.Enabled = true;
             timer.Interval = StandartInterval;
-            timer.Elapsed += TimerTick;
+            timer.Tick += new EventHandler(TimerTick);
             revenue = 0;
             modelTime = new ModelTime(simulationParameters.StartHour, simulationParameters.StartMinute);
             SetCarSpawnInterval();
@@ -51,7 +51,7 @@ namespace PaidParking3
         {
             if (simulationParameters.TrafficFlowType == SimulationParameters.DetRan.Deterministic)
             {
-                curIntervalTF = (int)simulationParameters.Interval2;
+                curIntervalTF = (int)simulationParameters.Interval;
             }
             else
                 switch (simulationParameters.Law)
@@ -74,35 +74,35 @@ namespace PaidParking3
                 }
         }
 
-        private void TimerTick(object? sender, ElapsedEventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             if (ticks % TickInMinute == 0)
             {
                 modelTime++;
-                timeLabel.Invoke((MethodInvoker)delegate {
-                    timeLabel.Text = "Время: " + modelTime;
-                });
-                curIntervalTF--;
+                timeLabel.Text = "Время: " + modelTime;
+                //curIntervalTF--;
             }
-            if (curIntervalTF == 0)
+            //timeLabel.Text = "Время: " + modelTime + " " + ticks;
+            /*if (curIntervalTF == 0)
             {
-                cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
+                //cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
                 SetCarSpawnInterval();
             }
-            foreach (Car c in cars)
+            for (int i = 0; i < cars.Count; i++)
             {
-                Car.State state = c.Motion(modelTime);
+                Car.State state = cars[i].Motion(modelTime);
                 if (state == Car.State.Finish)
                 {
-                    cars.Remove(c);
+                    cars.RemoveAt(i);
+                    i--;
                 }
-                else if (state == Car.State.Parked)
+                else if (state == Car.State.ParkedStart)
                 {
-                    dataGridView1.Rows.Add(c.CheckInTime, c.CheckOutTime, c.Cost);
-                    revenue += c.Cost;
+                    dataGridView1.Rows.Add(cars[i].CheckInTime, cars[i].CheckOutTime, string.Format("{0:f2}", cars[i].Cost));
+                    revenue += cars[i].Cost;
                     revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
                 }
-            }
+            }*/
             ticks++;
         }
 
@@ -142,67 +142,63 @@ namespace PaidParking3
             Height = 532;
             if (Height < fieldPictureBox.Height)
                 Height = fieldPictureBox.Height;
-            createPictureBoxesArray();
+            drawParking();
             revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
             timeLabel.Text = "Время: " + modelTime;
+            ticks = 1;
             timer.Start();
+            cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
         }
 
-        private void createPictureBoxesArray()
+        private void drawParking()
         {
-            pictureBoxes = new PictureBox[parking.Width, parking.Length];
-            for (int i = 0; i < pictureBoxes.GetLength(0); i++)
+            Bitmap bmp = new Bitmap(fieldPictureBox.Width, fieldPictureBox.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            for (int i = 0; i < parking.Topology.GetLength(0); i++)
             {
-                for (int j = 0; j < pictureBoxes.GetLength(1); j++)
+                for (int j = 0; j < parking.Topology.GetLength(1); j++)
                 {
-                    pictureBoxes[i, j] = new PictureBox();
-                    pictureBoxes[i, j].Location = new Point(j * 45, i * 45);
-                    pictureBoxes[i, j].BorderStyle = BorderStyle.FixedSingle;
-                    pictureBoxes[i, j].BackgroundImage = Properties.Resources.road;
-                    pictureBoxes[i, j].SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBoxes[i, j].Size = new Size(45, 45);
                     switch (parking.Topology[i, j])
                     {
                         case Sample.TPS:
                             {
-                                pictureBoxes[i, j].Size = new Size(45, 90);
-                                pictureBoxes[i, j].Image = Properties.Resources.TPS;
+                                g.DrawImage(Properties.Resources.TPS, j * 45, i * 45, 45, 90);
                                 break;
                             }
                         case Sample.CPS:
                             {
-                                pictureBoxes[i, j].Image = Properties.Resources.CPS;
+                                g.DrawImage(Properties.Resources.CPS, j * 45, i * 45, 45, 45);
                                 break;
                             }
                         case Sample.Road:
                             {
-                                pictureBoxes[i, j].Image = Properties.Resources.road;
+                                g.DrawImage(Properties.Resources.road, j * 45, i * 45, 45, 45);
                                 break;
                             }
                         case Sample.Entry:
                             {
-                                pictureBoxes[i, j].Image = Properties.Resources.entry;
+                                g.DrawImage(Properties.Resources.entry, j * 45, i * 45, 45, 45);
                                 break;
                             }
                         case Sample.Exit:
                             {
-                                pictureBoxes[i, j].Image = Properties.Resources.exit;
+                                g.DrawImage(Properties.Resources.exit, j * 45, i * 45, 45, 45);
                                 break;
                             }
                         case Sample.TicketOffice:
                             {
-                                pictureBoxes[i, j].Image = Properties.Resources.ticketOffice;
+                                g.DrawImage(Properties.Resources.ticketOffice, j * 45, i * 45, 45, 45);
                                 break;
                             }
                         case Sample.Lawn:
                             {
-                                pictureBoxes[i, j].Image = Properties.Resources.lawn;
+                                g.DrawImage(Properties.Resources.lawn, j * 45, i * 45, 45, 45);
                                 break;
                             }
                     }
-                    fieldPictureBox.Controls.Add(pictureBoxes[i, j]);
                 }
             }
+            fieldPictureBox.Image = bmp;
         }
 
         private void SimulationForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -229,7 +225,12 @@ namespace PaidParking3
 
         private void speedTrackBar_Scroll(object sender, EventArgs e)
         {
+            //timer.Stop();
+            //timer = new Timer();
+            //timer.Tick -= new EventHandler(TimerTick);
+            //timer.Tick += new EventHandler(TimerTick);
             timer.Interval = (int)(StandartInterval / Math.Pow(2, speedTrackBar.Value));
+            //timer.Start();
         }
     }
 }

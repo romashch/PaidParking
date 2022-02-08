@@ -127,6 +127,12 @@
   <data name="CPS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\CPS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="car" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\car.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lawn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\lawn.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="road" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\road.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -136,7 +142,7 @@
   <data name="entry" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\entry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="lawn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\lawn.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="track" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\track.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

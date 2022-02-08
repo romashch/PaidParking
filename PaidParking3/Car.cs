@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using static PaidParking3.SimulationForm;
@@ -36,17 +37,25 @@ namespace PaidParking3
         public enum State
         {
             Motion,
+            ParkedStart,
             Parked,
+            ParkedEnd,
             Finish
         }
         State state;
 
         public Car(Parking parking, SimulationParameters simulationParameters, PictureBox fieldPictureBox)
         {
-            isGoingToParking = new Random().NextDouble() < (simulationParameters.EnteringProbability);
+            //isGoingToParking = new Random().NextDouble() < (simulationParameters.EnteringProbability);
+            isGoingToParking = true;
             if (isGoingToParking)
             {
-                numOfPS = new Random().Next(0, parking.PS.Count);
+                do
+                {
+                    //numOfPS = new Random().Next(0, parking.PS.Count);
+                    numOfPS = parking.PS.Count - 2;
+                }
+                while (parking.PS[numOfPS].s == Sample.TPS);
                 SetParkingTime(simulationParameters);
             }
             SetWay(parking);
@@ -61,45 +70,53 @@ namespace PaidParking3
         {
             way = new List<Vertice>();
             int i;
-            if (isGoingToParking) {
-                for (i = parking.Length - 1; i >= parking.EntryWays[numOfPS][0].y; i--)
+            if (isGoingToParking)
+            {
+                for (i = parking.Length; i >= parking.EntryWays[numOfPS][0].y; i--)
                     way.Add(new Vertice(parking.Width, i, Sample.Road));
                 way.AddRange(parking.EntryWays[numOfPS]);
                 way.AddRange(parking.ExitWays[numOfPS]);
-                for (i = i + 1; i >= 0; i--)
+                for (i = parking.ExitWays[numOfPS][parking.ExitWays[numOfPS].Count - 1].y; i >= -1; i--)
                     way.Add(new Vertice(parking.Width, i, Sample.Road));
             }
             else
             {
-                for (i = parking.Length - 1; i >= 0; i--)
+                for (i = parking.Length; i >= -1; i--)
                     way.Add(new Vertice(parking.Width, i, Sample.Road));
             }
+
+            //проверка way
+            StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            for (int z = 0; z < way.Count; z++)
+            {
+                sw.WriteLine(way[z] + " " + way[z].s);
+            }
+            sw.Close();
         }
 
         private void SetPictureBox(Parking parking, SimulationParameters simulationParameters, PictureBox fieldPictureBox)
         {
-            isTruck = new Random().NextDouble() < (simulationParameters.TrucksPercentage / 100);
+            //isTruck = new Random().NextDouble() < (simulationParameters.TrucksPercentage / 100);
+            isTruck = false;
             pictureBox = new PictureBox();
             if (!isTruck)
             {
-                pictureBox.Location = new Point((parking.Length - 1) * 45, (parking.Width - 1) * 45);
+                pictureBox.Location = new Point((parking.Length) * 45, parking.Width * 45);
                 pictureBox.Size = new Size(45, 45);
-                pictureBox.Image = Properties.Resources.CPS;
+                pictureBox.Image = Properties.Resources.car;
             }
             else
             {
-                pictureBox.Location = new Point((parking.Length - 1) * 45, (parking.Width - 1) * 45);
+                pictureBox.Location = new Point((parking.Length) * 45, parking.Width * 45);
                 pictureBox.Size = new Size(90, 45);
-                pictureBox.Image = Properties.Resources.TPS;
+                pictureBox.Image = Properties.Resources.track;
             }
             pictureBox.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.BackgroundImage = null;
-            pictureBox.BackColor = Color.FromArgb(0, 0, 0, 0);
+            pictureBox.BackColor = Color.Transparent;
             pictureBox.Refresh();
-            fieldPictureBox.Invoke((MethodInvoker)delegate {
-                fieldPictureBox.Controls.Add(pictureBox); 
-            });
+            fieldPictureBox.Controls.Add(pictureBox);
         }
 
         private void SetParkingTime(SimulationParameters simulationParameters)
@@ -131,17 +148,17 @@ namespace PaidParking3
 
         private void ChangeDirection()
         {
-            int x = pictureBox.Location.X / 45;
-            int y = pictureBox.Location.Y / 45;
+            int x = pictureBox.Location.Y / 45;
+            int y = pictureBox.Location.X / 45;
             Direction oldDirection = direction;
             if (way[0].y < y)
-                direction = Direction.Top;
-            else if (way[0].y > y)
-                direction = Direction.Bottom;
-            else if (way[0].x < x)
                 direction = Direction.Left;
-            else if (way[0].x > x)
+            else if (way[0].y > y)
                 direction = Direction.Right;
+            else if (way[0].x < x)
+                direction = Direction.Top;
+            else if (way[0].x > x)
+                direction = Direction.Bottom;
             if (isTruck)
             {
                 if ((oldDirection == Direction.Top || oldDirection == Direction.Bottom) && (direction == Direction.Left || direction == Direction.Right))
@@ -185,32 +202,38 @@ namespace PaidParking3
                 else if (direction == Direction.Top)
                     pictureBox.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             }
-            pictureBox.Refresh();
+            pictureBox.BeginInvoke((MethodInvoker)(() => pictureBox.Refresh()));
+            //pictureBox.Refresh();
         }
-        
+
         public State Motion(ModelTime mt)
         {
             if (state == State.Parked && checkOutTime == mt)
             {
-                state = State.Motion;
+                state = State.ParkedEnd;
+                way.RemoveAt(0);
             }
-            else
+            else if (state == State.Finish || state == State.Parked)
             {
                 return state;
             }
-            if (pictureBox.Location.X % 45 == 0 || pictureBox.Location.Y % 45 == 0)
+            else if (state == State.ParkedStart)
             {
-
+                state = State.Parked;
+                return state;
+            }
+            if (pictureBox.Location.X % 45 == 0 && pictureBox.Location.Y % 45 == 0)
+            {
                 if (way[0].s == Sample.CPS || way[0].s == Sample.TPS)
                 {
-                    state = State.Parked;
+                    state = State.ParkedStart;
                     checkInTime = mt;
                     checkOutTime = checkInTime + parkingTime;
                     GetCost();
-                    way.RemoveAt(0);
                     return state;
                 }
-                way.RemoveAt(0);
+                if (state != State.ParkedEnd)
+                    way.RemoveAt(0);
                 if (way.Count == 0)
                 {
                     pictureBox.Dispose();
@@ -241,6 +264,10 @@ namespace PaidParking3
                         pictureBox.Location = new Point(pictureBox.Location.X + 1, pictureBox.Location.Y);
                         break;
                     }
+            }
+            if (state == State.ParkedEnd)
+            {
+                state = State.Motion;
             }
             return state;
         }
