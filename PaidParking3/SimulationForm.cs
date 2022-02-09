@@ -37,7 +37,7 @@ namespace PaidParking3
             parking.DijkstrasAlgorithmWithWays();
             parking.GetPS();
             simulationParameters = form.SimulationParameters;
-            timer = new Timer(components);
+            timer = new Timer();
             timer.Enabled = true;
             timer.Interval = StandartInterval;
             timer.Tick += new EventHandler(TimerTick);
@@ -45,6 +45,7 @@ namespace PaidParking3
             modelTime = new ModelTime(simulationParameters.StartHour, simulationParameters.StartMinute);
             SetCarSpawnInterval();
             cars = new List<Car>();
+            parking.IsBusy = new bool[parking.PS.Count];
         }
 
         private void SetCarSpawnInterval()
@@ -80,40 +81,48 @@ namespace PaidParking3
             {
                 modelTime++;
                 timeLabel.Text = "Время: " + modelTime;
-                //curIntervalTF--;
+                curIntervalTF--;
             }
             //timeLabel.Text = "Время: " + modelTime + " " + ticks;
-            /*if (curIntervalTF == 0)
+            if (curIntervalTF == 0)
             {
-                //cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
+                cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
                 SetCarSpawnInterval();
             }
             for (int i = 0; i < cars.Count; i++)
             {
                 Car.State state = cars[i].Motion(modelTime);
-                if (state == Car.State.Finish)
+                if (state == Car.State.ParkedStart)
+                {
+                    int firstDisplayed = dataGridView1.FirstDisplayedScrollingRowIndex;
+                    int displayed = dataGridView1.DisplayedRowCount(true);
+                    int lastVisible = (firstDisplayed + displayed) - 1;
+                    int lastIndex = dataGridView1.RowCount - 1;
+                    dataGridView1.Rows.Add(dataGridView1.Rows.Count, cars[i].CheckInTime, cars[i].CheckOutTime, string.Format("{0:f2}", cars[i].Cost));
+                    if (lastVisible == lastIndex)
+                    {
+                        dataGridView1.FirstDisplayedScrollingRowIndex = firstDisplayed + 1;
+                    }
+                    revenue += cars[i].Cost;
+                    revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
+                }
+                else if (state == Car.State.Finish)
                 {
                     cars.RemoveAt(i);
                     i--;
                 }
-                else if (state == Car.State.ParkedStart)
-                {
-                    dataGridView1.Rows.Add(cars[i].CheckInTime, cars[i].CheckOutTime, string.Format("{0:f2}", cars[i].Cost));
-                    revenue += cars[i].Cost;
-                    revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
-                }
-            }*/
+            }
             ticks++;
         }
 
         public static int RandomUniform(double min, double max)
         {
-            return (int)(new Random().NextDouble() * (max - min) + min);
+            return (int)(Math.Ceiling(new Random().NextDouble() * (max - min) + min));
         }
 
         public static int RandomExp(double lambda)
         {
-            return (int)(-Math.Log(1 - new Random().NextDouble()) / lambda);
+            return (int)(Math.Ceiling(-Math.Log(1 - new Random().NextDouble()) / lambda));
         }
 
         public static int RandomNormal(double mx, double dx)
@@ -131,7 +140,7 @@ namespace PaidParking3
                 z = x * Math.Sqrt(-2 * Math.Log(s) / s);
             }
             while (z <= 0);
-            return (int)(z * Math.Sqrt(dx) + mx);
+            return (int)(Math.Ceiling(z * Math.Sqrt(dx) + mx));
         }
 
         private void SimulationForm_Load(object sender, EventArgs e)
@@ -147,7 +156,6 @@ namespace PaidParking3
             timeLabel.Text = "Время: " + modelTime;
             ticks = 1;
             timer.Start();
-            cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
         }
 
         private void drawParking()
@@ -229,8 +237,10 @@ namespace PaidParking3
             //timer = new Timer();
             //timer.Tick -= new EventHandler(TimerTick);
             //timer.Tick += new EventHandler(TimerTick);
+            timer.Enabled = false;
             timer.Interval = (int)(StandartInterval / Math.Pow(2, speedTrackBar.Value));
             //timer.Start();
+            timer.Enabled = true;
         }
     }
 }

@@ -110,7 +110,7 @@ namespace PaidParking3
             {
                 SimulationParameters = SimulationParameters.Deserialize();
             }
-            else
+            if (SimulationParameters == null)
             {
                 SimulationParameters = new SimulationParameters();
             }

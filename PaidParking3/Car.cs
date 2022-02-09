@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using static PaidParking3.SimulationForm;
@@ -10,6 +11,7 @@ namespace PaidParking3
 {
     class Car
     {
+        Parking parking;
         bool isGoingToParking;
         bool isTruck;
         int numOfPS;
@@ -37,25 +39,39 @@ namespace PaidParking3
         public enum State
         {
             Motion,
+            TruckParkedStart,
             ParkedStart,
             Parked,
             ParkedEnd,
+            TruckParkedEnd,
             Finish
         }
         State state;
 
         public Car(Parking parking, SimulationParameters simulationParameters, PictureBox fieldPictureBox)
         {
-            //isGoingToParking = new Random().NextDouble() < (simulationParameters.EnteringProbability);
-            isGoingToParking = true;
+            isTruck = new Random().NextDouble() < (simulationParameters.TrucksPercentage / 100);
+            this.parking = parking;
+            Dictionary<int, Vertice> curFreePS = new Dictionary<int, Vertice>();
+            for (int i = 0; i < parking.PS.Count; i++)
+            {
+                if (parking.IsBusy[i] == false && (!isTruck && parking.PS[i].s == Sample.CPS || isTruck && parking.PS[i].s == Sample.TPS))
+                {
+                    curFreePS.Add(i, parking.PS[i]);
+                }
+            }
+            if (curFreePS.Count == 0)
+                isGoingToParking = false;
+            else
+                isGoingToParking = new Random().NextDouble() < (simulationParameters.EnteringProbability);
             if (isGoingToParking)
             {
                 do
                 {
-                    //numOfPS = new Random().Next(0, parking.PS.Count);
-                    numOfPS = parking.PS.Count - 2;
+                    numOfPS = new Random().Next(0, parking.PS.Count);
                 }
-                while (parking.PS[numOfPS].s == Sample.TPS);
+                while (!curFreePS.ContainsKey(numOfPS));
+                parking.IsBusy[numOfPS] = true;
                 SetParkingTime(simulationParameters);
             }
             SetWay(parking);
@@ -86,36 +102,33 @@ namespace PaidParking3
             }
 
             //проверка way
-            StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
-            for (int z = 0; z < way.Count; z++)
-            {
-                sw.WriteLine(way[z] + " " + way[z].s);
-            }
-            sw.Close();
+            //StreamWriter sw = new StreamWriter(@"C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\graph.txt", false);
+            //for (int z = 0; z < way.Count; z++)
+            //{
+            //    sw.WriteLine(way[z] + " " + way[z].s);
+            //}
+            //sw.Close();
         }
 
         private void SetPictureBox(Parking parking, SimulationParameters simulationParameters, PictureBox fieldPictureBox)
         {
-            //isTruck = new Random().NextDouble() < (simulationParameters.TrucksPercentage / 100);
-            isTruck = false;
             pictureBox = new PictureBox();
             if (!isTruck)
             {
-                pictureBox.Location = new Point((parking.Length) * 45, parking.Width * 45);
+                pictureBox.Location = new Point(parking.Length * 45, parking.Width * 45);
                 pictureBox.Size = new Size(45, 45);
                 pictureBox.Image = Properties.Resources.car;
             }
             else
             {
-                pictureBox.Location = new Point((parking.Length) * 45, parking.Width * 45);
+                pictureBox.Location = new Point(parking.Length * 45 - 22, parking.Width * 45);
                 pictureBox.Size = new Size(90, 45);
                 pictureBox.Image = Properties.Resources.track;
             }
-            pictureBox.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox.BackgroundImage = null;
-            pictureBox.BackColor = Color.Transparent;
-            pictureBox.Refresh();
+            pictureBox.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            pictureBox.BackColor = Color.FromArgb(0, 0, 0, 0);
             fieldPictureBox.Controls.Add(pictureBox);
         }
 
@@ -148,9 +161,26 @@ namespace PaidParking3
 
         private void ChangeDirection()
         {
-            int x = pictureBox.Location.Y / 45;
-            int y = pictureBox.Location.X / 45;
+            int x, y;
+            if (!isTruck || isTruck && state == State.TruckParkedEnd)
+            {
+                x = pictureBox.Location.Y / 45;
+                y = pictureBox.Location.X / 45;
+            }
+            else
+            {
+                x = (pictureBox.Location.Y + 22) / 45;
+                y = (pictureBox.Location.X + 22) / 45;
+            }
             Direction oldDirection = direction;
+            if (state == State.TruckParkedEnd && way[0].x == x)
+            {
+                direction = Direction.Top;
+            }
+            else if (state == State.TruckParkedEnd && way[0].x > x)
+            {
+                direction = Direction.Bottom;
+            }
             if (way[0].y < y)
                 direction = Direction.Left;
             else if (way[0].y > y)
@@ -162,9 +192,15 @@ namespace PaidParking3
             if (isTruck)
             {
                 if ((oldDirection == Direction.Top || oldDirection == Direction.Bottom) && (direction == Direction.Left || direction == Direction.Right))
+                {
                     pictureBox.Size = new Size(90, 45);
+                    pictureBox.Location = new Point(pictureBox.Location.X - 22, pictureBox.Location.Y + 22);
+                }
                 else if ((oldDirection == Direction.Left || oldDirection == Direction.Right) && (direction == Direction.Top || direction == Direction.Bottom))
+                {
                     pictureBox.Size = new Size(45, 90);
+                    pictureBox.Location = new Point(pictureBox.Location.X + 22, pictureBox.Location.Y - 22);
+                }
             }
             if (oldDirection == Direction.Top)
             {
@@ -197,13 +233,11 @@ namespace PaidParking3
             {
                 if (direction == Direction.Bottom)
                     pictureBox.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                else if (direction == Direction.Left)
-                    pictureBox.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
                 else if (direction == Direction.Top)
                     pictureBox.Image.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                else if (direction == Direction.Left)
+                    pictureBox.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             }
-            pictureBox.BeginInvoke((MethodInvoker)(() => pictureBox.Refresh()));
-            //pictureBox.Refresh();
         }
 
         public State Motion(ModelTime mt)
@@ -211,7 +245,13 @@ namespace PaidParking3
             if (state == State.Parked && checkOutTime == mt)
             {
                 state = State.ParkedEnd;
+                parking.IsBusy[numOfPS] = false;
                 way.RemoveAt(0);
+                if (isTruck)
+                {
+                    state = State.TruckParkedEnd;
+                    ChangeDirection();
+                }
             }
             else if (state == State.Finish || state == State.Parked)
             {
@@ -222,15 +262,31 @@ namespace PaidParking3
                 state = State.Parked;
                 return state;
             }
-            if (pictureBox.Location.X % 45 == 0 && pictureBox.Location.Y % 45 == 0)
+            else if (state == State.TruckParkedStart && pictureBox.Location.X % 45 == 0 && pictureBox.Location.Y % 45 == 0)
             {
-                if (way[0].s == Sample.CPS || way[0].s == Sample.TPS)
+                state = State.ParkedStart;
+                checkInTime = mt;
+                checkOutTime = checkInTime + parkingTime;
+                GetCost();
+                return state;
+            }
+            if (!isTruck && pictureBox.Location.X % 45 == 0 && pictureBox.Location.Y % 45 == 0 || isTruck && ((pictureBox.Location.X + 22) % 45 == 0 && pictureBox.Location.Y % 45 == 0 || (pictureBox.Location.Y + 22) % 45 == 0 && pictureBox.Location.X % 45 == 0))
+            {
+                if (way[0].s == Sample.CPS)
                 {
                     state = State.ParkedStart;
                     checkInTime = mt;
                     checkOutTime = checkInTime + parkingTime;
                     GetCost();
                     return state;
+                }
+                else if (state != State.TruckParkedEnd && state == State.Motion && (way[0].s == Sample.TPS || way[0].s == Sample.None))
+                {
+                    state = State.TruckParkedStart;
+                }
+                else if (state == State.TruckParkedEnd)
+                {
+                    state = State.Motion;
                 }
                 if (state != State.ParkedEnd)
                     way.RemoveAt(0);

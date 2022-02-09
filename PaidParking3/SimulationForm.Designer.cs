@@ -32,9 +32,6 @@ namespace PaidParking3
             this.timeLabel = new System.Windows.Forms.Label();
             this.revenueLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.ArrivalTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DepartureTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.speedTrackBar = new System.Windows.Forms.TrackBar();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -44,6 +41,10 @@ namespace PaidParking3
             this.pauseButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.fieldPictureBox = new System.Windows.Forms.PictureBox();
+            this.NumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ArrivalTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DepartureTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fieldPictureBox)).BeginInit();
@@ -73,39 +74,17 @@ namespace PaidParking3
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NumDataGridViewTextBoxColumn,
             this.ArrivalTimeDataGridViewTextBoxColumn,
             this.DepartureTimeDataGridViewTextBoxColumn,
             this.PriceDataGridViewTextBoxColumn});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 177);
+            this.dataGridView1.Location = new System.Drawing.Point(17, 179);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 40;
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(232, 298);
+            this.dataGridView1.Size = new System.Drawing.Size(223, 298);
             this.dataGridView1.TabIndex = 2;
-            // 
-            // ArrivalTimeDataGridViewTextBoxColumn
-            // 
-            this.ArrivalTimeDataGridViewTextBoxColumn.HeaderText = "t заезда";
-            this.ArrivalTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
-            this.ArrivalTimeDataGridViewTextBoxColumn.Name = "ArrivalTimeDataGridViewTextBoxColumn";
-            this.ArrivalTimeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.ArrivalTimeDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // DepartureTimeDataGridViewTextBoxColumn
-            // 
-            this.DepartureTimeDataGridViewTextBoxColumn.HeaderText = "t выезда";
-            this.DepartureTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
-            this.DepartureTimeDataGridViewTextBoxColumn.Name = "DepartureTimeDataGridViewTextBoxColumn";
-            this.DepartureTimeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.DepartureTimeDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // PriceDataGridViewTextBoxColumn
-            // 
-            this.PriceDataGridViewTextBoxColumn.HeaderText = "Стоимость";
-            this.PriceDataGridViewTextBoxColumn.MinimumWidth = 70;
-            this.PriceDataGridViewTextBoxColumn.Name = "PriceDataGridViewTextBoxColumn";
-            this.PriceDataGridViewTextBoxColumn.ReadOnly = true;
-            this.PriceDataGridViewTextBoxColumn.Width = 70;
             // 
             // speedTrackBar
             // 
@@ -194,6 +173,37 @@ namespace PaidParking3
             this.fieldPictureBox.TabIndex = 11;
             this.fieldPictureBox.TabStop = false;
             // 
+            // NumDataGridViewTextBoxColumn
+            // 
+            this.NumDataGridViewTextBoxColumn.HeaderText = "№";
+            this.NumDataGridViewTextBoxColumn.Name = "NumDataGridViewTextBoxColumn";
+            this.NumDataGridViewTextBoxColumn.ReadOnly = true;
+            this.NumDataGridViewTextBoxColumn.Width = 30;
+            // 
+            // ArrivalTimeDataGridViewTextBoxColumn
+            // 
+            this.ArrivalTimeDataGridViewTextBoxColumn.HeaderText = "t заезда";
+            this.ArrivalTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
+            this.ArrivalTimeDataGridViewTextBoxColumn.Name = "ArrivalTimeDataGridViewTextBoxColumn";
+            this.ArrivalTimeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.ArrivalTimeDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // DepartureTimeDataGridViewTextBoxColumn
+            // 
+            this.DepartureTimeDataGridViewTextBoxColumn.HeaderText = "t выезда";
+            this.DepartureTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
+            this.DepartureTimeDataGridViewTextBoxColumn.Name = "DepartureTimeDataGridViewTextBoxColumn";
+            this.DepartureTimeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DepartureTimeDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // PriceDataGridViewTextBoxColumn
+            // 
+            this.PriceDataGridViewTextBoxColumn.HeaderText = "Стоимость";
+            this.PriceDataGridViewTextBoxColumn.MinimumWidth = 70;
+            this.PriceDataGridViewTextBoxColumn.Name = "PriceDataGridViewTextBoxColumn";
+            this.PriceDataGridViewTextBoxColumn.ReadOnly = true;
+            this.PriceDataGridViewTextBoxColumn.Width = 70;
+            // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -231,9 +241,6 @@ namespace PaidParking3
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Label revenueLabel;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ArrivalTimeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DepartureTimeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PriceDataGridViewTextBoxColumn;
         private System.Windows.Forms.TrackBar speedTrackBar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -243,5 +250,9 @@ namespace PaidParking3
         private System.Windows.Forms.Button pauseButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.PictureBox fieldPictureBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NumDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ArrivalTimeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DepartureTimeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceDataGridViewTextBoxColumn;
     }
 }

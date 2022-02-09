@@ -28,6 +28,8 @@ namespace PaidParking3
 
         [NonSerialized]
         Dictionary<int, Vertice> ps;
+        
+        public bool[] IsBusy { get; set; }
 
         public List<List<Vertice>> EntryWays { get { return entryWays; } }
 
@@ -406,8 +408,26 @@ namespace PaidParking3
                         for (Vertice v = vertices[i]; !v.Equals(vertices[startIndex]); v = p[vertices.IndexOf(v)])
                             cur.Add(v);
                         cur.Add(vertices[startIndex]);
-                        if (k == 0)
+                        Vertice ps = cur[0];
+                        if (ps.s == Sample.TPS)
                         {
+                            if (cur[1].x <= ps.x)
+                            {
+                                cur.Reverse();
+                                cur.Add(new Vertice(ps.x + 1, ps.y, Sample.None));
+                                cur.Reverse();
+                            }
+                            else
+                            {
+                                cur.Reverse();
+                                cur.RemoveAt(cur.Count - 1);
+                                cur.Add(new Vertice(ps.x + 1, ps.y, Sample.None));
+                                cur.Add(ps);
+                                cur.Reverse();
+                            }
+                        }
+                        if (k == 0)
+                        {                           
                             cur.Reverse();
                             entryWays.Add(cur);
                         }

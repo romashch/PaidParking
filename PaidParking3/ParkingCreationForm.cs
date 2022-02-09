@@ -231,7 +231,7 @@ namespace PaidParking3
             {
                 current = Sample.Lawn;
             }
-            pictureBox.DoDragDrop(pictureBox.Image, DragDropEffects.Copy);
+            pictureBox.DoDragDrop(pictureBox.Image, DragDropEffects.Copy); //error after clear field
         }
 
         private void PictureBox_DragDrop(object sender, DragEventArgs e)
