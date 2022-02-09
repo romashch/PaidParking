@@ -43,7 +43,7 @@ namespace PaidParking3
                 {
                     List<Cell> cells = db.Cells.Where(c => c.ParkingName == listBox1.SelectedItem).ToList();
                     Parking parking = new Parking(cells);
-                    //parking.Serialize();
+                    parking.Serialize();
                     form.Parking = parking;
                     Close();
                 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
@@ -151,13 +152,14 @@ namespace PaidParking3
         public double Lambda2 { get; set; } = PTLambdaMax;
         public int StartHour { get; set; } = 5;
         public int StartMinute { get; set; } = 0;
-        public const string Path = @"simulationParameters.json";
+        public const string Path = @"simPar.dat";
+
         public void Serialize()
         {
-            using (FileStream fstream = new FileStream(Path, FileMode.OpenOrCreate))
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
             {
-                var ser = new DataContractJsonSerializer(typeof(SimulationParameters));
-                ser.WriteObject(fstream, this);
+                formatter.Serialize(fs, this);
             }
         }
 
@@ -165,13 +167,12 @@ namespace PaidParking3
         {
             if (File.Exists(Path))
             {
-                using (FileStream fstream = File.OpenRead(Path))
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
                 {
-                    var ser = new DataContractJsonSerializer(typeof(SimulationParameters));
-                    fstream.Position = 0;
                     try
                     {
-                        SimulationParameters sp = (SimulationParameters)ser.ReadObject(fstream);
+                        SimulationParameters sp = (SimulationParameters)formatter.Deserialize(fs);
                         return sp;
                     }
                     catch

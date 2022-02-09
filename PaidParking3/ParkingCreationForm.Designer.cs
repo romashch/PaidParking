@@ -61,7 +61,7 @@ namespace PaidParking3
             this.TPSPictureBox.ImageLocation = "";
             this.TPSPictureBox.Location = new System.Drawing.Point(18, 58);
             this.TPSPictureBox.Name = "TPSPictureBox";
-            this.TPSPictureBox.Size = new System.Drawing.Size(45, 90);
+            this.TPSPictureBox.Size = new System.Drawing.Size(44, 88);
             this.TPSPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.TPSPictureBox.TabIndex = 0;
             this.TPSPictureBox.TabStop = false;
@@ -76,7 +76,7 @@ namespace PaidParking3
             this.CPSPictureBox.ImageLocation = "";
             this.CPSPictureBox.Location = new System.Drawing.Point(75, 58);
             this.CPSPictureBox.Name = "CPSPictureBox";
-            this.CPSPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.CPSPictureBox.Size = new System.Drawing.Size(44, 44);
             this.CPSPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.CPSPictureBox.TabIndex = 1;
             this.CPSPictureBox.TabStop = false;
@@ -91,7 +91,7 @@ namespace PaidParking3
             this.entryPictureBox.ImageLocation = "";
             this.entryPictureBox.Location = new System.Drawing.Point(131, 58);
             this.entryPictureBox.Name = "entryPictureBox";
-            this.entryPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.entryPictureBox.Size = new System.Drawing.Size(44, 44);
             this.entryPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.entryPictureBox.TabIndex = 2;
             this.entryPictureBox.TabStop = false;
@@ -105,7 +105,7 @@ namespace PaidParking3
             this.exitPictureBox.ImageLocation = "";
             this.exitPictureBox.Location = new System.Drawing.Point(75, 114);
             this.exitPictureBox.Name = "exitPictureBox";
-            this.exitPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.exitPictureBox.Size = new System.Drawing.Size(44, 44);
             this.exitPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.exitPictureBox.TabIndex = 3;
             this.exitPictureBox.TabStop = false;
@@ -119,7 +119,7 @@ namespace PaidParking3
             this.ticketOfficePictureBox.ImageLocation = "";
             this.ticketOfficePictureBox.Location = new System.Drawing.Point(131, 114);
             this.ticketOfficePictureBox.Name = "ticketOfficePictureBox";
-            this.ticketOfficePictureBox.Size = new System.Drawing.Size(45, 45);
+            this.ticketOfficePictureBox.Size = new System.Drawing.Size(44, 44);
             this.ticketOfficePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ticketOfficePictureBox.TabIndex = 4;
             this.ticketOfficePictureBox.TabStop = false;
@@ -133,7 +133,7 @@ namespace PaidParking3
             this.lawnPictureBox.ImageLocation = "";
             this.lawnPictureBox.Location = new System.Drawing.Point(18, 161);
             this.lawnPictureBox.Name = "lawnPictureBox";
-            this.lawnPictureBox.Size = new System.Drawing.Size(45, 45);
+            this.lawnPictureBox.Size = new System.Drawing.Size(44, 44);
             this.lawnPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.lawnPictureBox.TabIndex = 5;
             this.lawnPictureBox.TabStop = false;

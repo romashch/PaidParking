@@ -32,6 +32,10 @@ namespace PaidParking3
             this.timeLabel = new System.Windows.Forms.Label();
             this.revenueLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.NumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ArrivalTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DepartureTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.speedTrackBar = new System.Windows.Forms.TrackBar();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -41,10 +45,6 @@ namespace PaidParking3
             this.pauseButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.fieldPictureBox = new System.Windows.Forms.PictureBox();
-            this.NumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ArrivalTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DepartureTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fieldPictureBox)).BeginInit();
@@ -85,6 +85,37 @@ namespace PaidParking3
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.Size = new System.Drawing.Size(223, 298);
             this.dataGridView1.TabIndex = 2;
+            // 
+            // NumDataGridViewTextBoxColumn
+            // 
+            this.NumDataGridViewTextBoxColumn.HeaderText = "№";
+            this.NumDataGridViewTextBoxColumn.Name = "NumDataGridViewTextBoxColumn";
+            this.NumDataGridViewTextBoxColumn.ReadOnly = true;
+            this.NumDataGridViewTextBoxColumn.Width = 30;
+            // 
+            // ArrivalTimeDataGridViewTextBoxColumn
+            // 
+            this.ArrivalTimeDataGridViewTextBoxColumn.HeaderText = "t заезда";
+            this.ArrivalTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
+            this.ArrivalTimeDataGridViewTextBoxColumn.Name = "ArrivalTimeDataGridViewTextBoxColumn";
+            this.ArrivalTimeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.ArrivalTimeDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // DepartureTimeDataGridViewTextBoxColumn
+            // 
+            this.DepartureTimeDataGridViewTextBoxColumn.HeaderText = "t выезда";
+            this.DepartureTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
+            this.DepartureTimeDataGridViewTextBoxColumn.Name = "DepartureTimeDataGridViewTextBoxColumn";
+            this.DepartureTimeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.DepartureTimeDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // PriceDataGridViewTextBoxColumn
+            // 
+            this.PriceDataGridViewTextBoxColumn.HeaderText = "Стоимость";
+            this.PriceDataGridViewTextBoxColumn.MinimumWidth = 70;
+            this.PriceDataGridViewTextBoxColumn.Name = "PriceDataGridViewTextBoxColumn";
+            this.PriceDataGridViewTextBoxColumn.ReadOnly = true;
+            this.PriceDataGridViewTextBoxColumn.Width = 70;
             // 
             // speedTrackBar
             // 
@@ -173,37 +204,6 @@ namespace PaidParking3
             this.fieldPictureBox.TabIndex = 11;
             this.fieldPictureBox.TabStop = false;
             // 
-            // NumDataGridViewTextBoxColumn
-            // 
-            this.NumDataGridViewTextBoxColumn.HeaderText = "№";
-            this.NumDataGridViewTextBoxColumn.Name = "NumDataGridViewTextBoxColumn";
-            this.NumDataGridViewTextBoxColumn.ReadOnly = true;
-            this.NumDataGridViewTextBoxColumn.Width = 30;
-            // 
-            // ArrivalTimeDataGridViewTextBoxColumn
-            // 
-            this.ArrivalTimeDataGridViewTextBoxColumn.HeaderText = "t заезда";
-            this.ArrivalTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
-            this.ArrivalTimeDataGridViewTextBoxColumn.Name = "ArrivalTimeDataGridViewTextBoxColumn";
-            this.ArrivalTimeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.ArrivalTimeDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // DepartureTimeDataGridViewTextBoxColumn
-            // 
-            this.DepartureTimeDataGridViewTextBoxColumn.HeaderText = "t выезда";
-            this.DepartureTimeDataGridViewTextBoxColumn.MinimumWidth = 60;
-            this.DepartureTimeDataGridViewTextBoxColumn.Name = "DepartureTimeDataGridViewTextBoxColumn";
-            this.DepartureTimeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.DepartureTimeDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // PriceDataGridViewTextBoxColumn
-            // 
-            this.PriceDataGridViewTextBoxColumn.HeaderText = "Стоимость";
-            this.PriceDataGridViewTextBoxColumn.MinimumWidth = 70;
-            this.PriceDataGridViewTextBoxColumn.Name = "PriceDataGridViewTextBoxColumn";
-            this.PriceDataGridViewTextBoxColumn.ReadOnly = true;
-            this.PriceDataGridViewTextBoxColumn.Width = 70;
-            // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -222,7 +222,7 @@ namespace PaidParking3
             this.Controls.Add(this.revenueLabel);
             this.Controls.Add(this.timeLabel);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(501, 532);
+            this.MinimumSize = new System.Drawing.Size(496, 532);
             this.Name = "SimulationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "Моделирование";

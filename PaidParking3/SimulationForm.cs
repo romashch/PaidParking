@@ -16,13 +16,14 @@ namespace PaidParking3
         Parking parking;
         SimulationParameters simulationParameters;
         int ticks;
-        const int StandartInterval = 8;
-        const int TickInMinute = 50;
+        const int Interval = 1;
+        const int StandartTickInMinute = 40;
         ModelTime modelTime;
         double revenue;
         Timer timer;
         int curIntervalTF;
         List<Car> cars;
+        int speed;
 
         public SimulationForm()
         {
@@ -39,8 +40,8 @@ namespace PaidParking3
             simulationParameters = form.SimulationParameters;
             timer = new Timer();
             timer.Enabled = true;
-            timer.Interval = StandartInterval;
-            timer.Tick += new EventHandler(TimerTick);
+            timer.Interval = Interval;
+            timer.Tick += new EventHandler((s, e) => TimerTick(speed, e));
             revenue = 0;
             modelTime = new ModelTime(simulationParameters.StartHour, simulationParameters.StartMinute);
             SetCarSpawnInterval();
@@ -77,13 +78,13 @@ namespace PaidParking3
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (ticks % TickInMinute == 0)
+            int speed = (int)sender;
+            if (ticks % (StandartTickInMinute / speed) == 0)
             {
                 modelTime++;
                 timeLabel.Text = "Время: " + modelTime;
                 curIntervalTF--;
             }
-            //timeLabel.Text = "Время: " + modelTime + " " + ticks;
             if (curIntervalTF == 0)
             {
                 cars.Add(new Car(parking, simulationParameters, fieldPictureBox));
@@ -91,7 +92,7 @@ namespace PaidParking3
             }
             for (int i = 0; i < cars.Count; i++)
             {
-                Car.State state = cars[i].Motion(modelTime);
+                Car.State state = cars[i].Motion(modelTime, speed);
                 if (state == Car.State.ParkedStart)
                 {
                     int firstDisplayed = dataGridView1.FirstDisplayedScrollingRowIndex;
@@ -145,8 +146,8 @@ namespace PaidParking3
 
         private void SimulationForm_Load(object sender, EventArgs e)
         {
-            fieldPictureBox.Width = parking.Length * 45;
-            fieldPictureBox.Height = parking.Width * 45 + 45;
+            fieldPictureBox.Width = parking.Length * 44;
+            fieldPictureBox.Height = parking.Width * 44 + 44;
             Width = 260 + 16 + fieldPictureBox.Width;
             Height = 532;
             if (Height < fieldPictureBox.Height)
@@ -155,6 +156,7 @@ namespace PaidParking3
             revenueLabel.Text = string.Format("Выручка: {0:f2}", revenue);
             timeLabel.Text = "Время: " + modelTime;
             ticks = 1;
+            speed = 1;
             timer.Start();
         }
 
@@ -170,37 +172,37 @@ namespace PaidParking3
                     {
                         case Sample.TPS:
                             {
-                                g.DrawImage(Properties.Resources.TPS, j * 45, i * 45, 45, 90);
+                                g.DrawImage(Properties.Resources.TPS, j * 44, i * 44, 44, 88);
                                 break;
                             }
                         case Sample.CPS:
                             {
-                                g.DrawImage(Properties.Resources.CPS, j * 45, i * 45, 45, 45);
+                                g.DrawImage(Properties.Resources.CPS, j * 44, i * 44, 44, 44);
                                 break;
                             }
                         case Sample.Road:
                             {
-                                g.DrawImage(Properties.Resources.road, j * 45, i * 45, 45, 45);
+                                g.DrawImage(Properties.Resources.road, j * 44, i * 44, 44, 44);
                                 break;
                             }
                         case Sample.Entry:
                             {
-                                g.DrawImage(Properties.Resources.entry, j * 45, i * 45, 45, 45);
+                                g.DrawImage(Properties.Resources.entry, j * 44, i * 44, 44, 44);
                                 break;
                             }
                         case Sample.Exit:
                             {
-                                g.DrawImage(Properties.Resources.exit, j * 45, i * 45, 45, 45);
+                                g.DrawImage(Properties.Resources.exit, j * 44, i * 44, 44, 44);
                                 break;
                             }
                         case Sample.TicketOffice:
                             {
-                                g.DrawImage(Properties.Resources.ticketOffice, j * 45, i * 45, 45, 45);
+                                g.DrawImage(Properties.Resources.ticketOffice, j * 44, i * 44, 44, 44);
                                 break;
                             }
                         case Sample.Lawn:
                             {
-                                g.DrawImage(Properties.Resources.lawn, j * 45, i * 45, 45, 45);
+                                g.DrawImage(Properties.Resources.lawn, j * 44, i * 44, 44, 44);
                                 break;
                             }
                     }
@@ -233,14 +235,7 @@ namespace PaidParking3
 
         private void speedTrackBar_Scroll(object sender, EventArgs e)
         {
-            //timer.Stop();
-            //timer = new Timer();
-            //timer.Tick -= new EventHandler(TimerTick);
-            //timer.Tick += new EventHandler(TimerTick);
-            timer.Enabled = false;
-            timer.Interval = (int)(StandartInterval / Math.Pow(2, speedTrackBar.Value));
-            //timer.Start();
-            timer.Enabled = true;
+            speed = (int)Math.Pow(2, speedTrackBar.Value);
         }
     }
 }
