@@ -81,7 +81,7 @@ namespace PaidParking3
             }
         }
 
-        static int filehc = 10279;
+        static int filehc = 10825;
 
         public static void OpenHelpFile()
         {
