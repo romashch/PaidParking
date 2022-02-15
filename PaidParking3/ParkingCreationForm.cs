@@ -37,7 +37,7 @@ namespace PaidParking3
             parking = form.Parking;
             if (parking != null && length == parking.Length && width == parking.Width)
             {
-                topology = parking.Topology;
+                topology = (Sample[,])parking.Topology.Clone();
             }
             else
             {
@@ -51,7 +51,15 @@ namespace PaidParking3
 
         private void ParkingCreationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            form2.Show();
+            if (parking == null)
+            {
+                form2.Show();
+            }
+            else
+            {
+                form2.Close();
+                form.Show();
+            }
         }
 
         private void aboutProgramButton_Click(object sender, EventArgs e)
@@ -61,18 +69,18 @@ namespace PaidParking3
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            parking = Validation(topology);
-            if (parking == null)
+            try
             {
-                MessageBox.Show("Некорректная парковка.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                saveToDBButton.Enabled = false;
-            }
-            else
-            {
+                parking = Validation(topology);
                 MessageBox.Show("Парковка успешно сохранена.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 saveToDBButton.Enabled = true;
                 form.Parking = parking;
-                parking.Serialize();
+                //parking.Serialize();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                saveToDBButton.Enabled = false;
             }
         }
 

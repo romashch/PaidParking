@@ -40,6 +40,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AngleSharp": {
+              "target": "Package",
+              "version": "[0.16.1, )"
+            },
             "Control.Draggable": {
               "target": "Package",
               "version": "[1.0.5049.269, )"
@@ -61,6 +65,10 @@
             "System.Data.SQLite": {
               "target": "Package",
               "version": "[1.0.115.5, )"
+            },
+            "System.Xml.XmlDocument": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [

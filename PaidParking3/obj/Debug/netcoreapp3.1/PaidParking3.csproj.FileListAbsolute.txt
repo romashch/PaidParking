@@ -72,3 +72,7 @@ C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\n
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\SQLite.Interop.dll
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\AngleSharp.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\System.Text.Encoding.CodePages.dll
+C:\Users\dvt21\Documents\Универ\ПИ\PaidParking3\PaidParking3\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll

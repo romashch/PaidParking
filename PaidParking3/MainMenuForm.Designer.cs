@@ -69,7 +69,7 @@ namespace PaidParking3
             this.parkingCreationButton.Name = "parkingCreationButton";
             this.parkingCreationButton.Size = new System.Drawing.Size(248, 41);
             this.parkingCreationButton.TabIndex = 1;
-            this.parkingCreationButton.Text = "Создать парковку";
+            this.parkingCreationButton.Text = "Конструирование парковки";
             this.parkingCreationButton.UseVisualStyleBackColor = true;
             this.parkingCreationButton.Click += new System.EventHandler(this.parkingCreationButton_Click);
             // 

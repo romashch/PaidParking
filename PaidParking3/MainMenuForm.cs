@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Net;
-using System.Text;
 using System.Windows.Forms;
 
 namespace PaidParking3
@@ -26,9 +20,17 @@ namespace PaidParking3
 
         private void parkingCreationButton_Click(object sender, EventArgs e)
         {
-            ParkingDimensionsForm form = new ParkingDimensionsForm(this);
+            ParkingDimensionsForm form2 = new ParkingDimensionsForm(this);
             Hide();
-            form.Show();
+            if (Parking == null)
+            {
+                form2.Show();
+            }
+            else
+            {
+                Form form = new ParkingCreationForm(this, form2, Parking.Length, Parking.Width);
+                form.Show();
+            }
         }
 
         private void parkingLoadingButton_Click(object sender, EventArgs e)
@@ -79,12 +81,18 @@ namespace PaidParking3
             }
         }
 
+        static int filehc = 10279;
+
         public static void OpenHelpFile()
         {
             if (File.Exists(PathHelpFile))
             {
                 try
                 {
+                    int fhc = File.ReadAllText(PathHelpFile).Length;
+                    //filehc = fhc;
+                    if (fhc != filehc)
+                        throw new Exception();
                     Process p = Process.Start(new ProcessStartInfo(PathHelpFile) { UseShellExecute = true });
                     if (p == null)
                         throw new Exception();
@@ -102,10 +110,10 @@ namespace PaidParking3
 
         private void MainMenuForm_Load(object sender, EventArgs e)
         {
-            if (File.Exists(Parking.Path))
-            {
-                Parking = Parking.Deserialize();
-            }
+            //if (File.Exists(Parking.Path))
+            //{
+            //    Parking = Parking.Deserialize();
+            //}
             if (File.Exists(SimulationParameters.Path))
             {
                 SimulationParameters = SimulationParameters.Deserialize();

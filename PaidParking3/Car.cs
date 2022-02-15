@@ -301,6 +301,7 @@ namespace PaidParking3
             if (state == State.ParkedEnd)
             {
                 state = State.Motion;
+                return state;
             }
             return state;
         }

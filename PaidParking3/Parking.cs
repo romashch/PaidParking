@@ -81,7 +81,7 @@ namespace PaidParking3
                         entryY = j;
                         if (i != topology.GetLength(0) - 1)
                         {
-                            return null;
+                            throw new Exception("Въезд должен быть рядом с дорогой.");
                         }
                     }
                     if (topology[i, j] == Sample.TicketOffice)
@@ -95,7 +95,7 @@ namespace PaidParking3
                         isExit = true;
                         if (i != topology.GetLength(0) - 1)
                         {
-                            return null;
+                            throw new Exception("Выезд должен быть рядом с дорогой.");
                         }
                     }
                     if (topology[i, j] == Sample.TPS || topology[i, j] == Sample.CPS)
@@ -104,17 +104,29 @@ namespace PaidParking3
                     }
                 }
             }
-            if (!(isExit && isEntry && isTicketOffice && isPS))
+            if (!isEntry)
             {
-                return null;
+                throw new Exception("Нет въезда.");
+            }
+            if (!isExit)
+            {
+                throw new Exception("Нет выезда.");
+            }
+            if (!isTicketOffice)
+            {
+                throw new Exception("Нет кассы.");
+            }
+            if (!isPS)
+            {
+                throw new Exception("Нет ни одного парковочного места.");
             }
             if (!(Math.Abs(entryY - ticketOfficeY) == 1 && entryX == ticketOfficeX || Math.Abs(entryX - ticketOfficeX) == 1 && entryY == ticketOfficeY))
             {
-                return null;
+                throw new Exception("Касса находится не рядом с въездом.");
             }
             if (!DijkstrasAlgorithm(topology))
             {
-                return null;
+                throw new Exception("Не от всех парковочных мест есть путь до въезда или до выезда.");
             }
             return new Parking(topology);
         }

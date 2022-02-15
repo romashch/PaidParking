@@ -57,7 +57,7 @@ namespace PaidParking3
             this.TPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.TPSPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("TPSPictureBox.BackgroundImage")));
             this.TPSPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.TPSPictureBox.Image = global::PaidParking3.Properties.Resources.TPS;
+            this.TPSPictureBox.Image = global::PaidParking3.Properties.Resources.TPS2;
             this.TPSPictureBox.ImageLocation = "";
             this.TPSPictureBox.Location = new System.Drawing.Point(18, 58);
             this.TPSPictureBox.Name = "TPSPictureBox";
@@ -72,7 +72,7 @@ namespace PaidParking3
             this.CPSPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.CPSPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CPSPictureBox.BackgroundImage")));
             this.CPSPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.CPSPictureBox.Image = global::PaidParking3.Properties.Resources.CPS;
+            this.CPSPictureBox.Image = global::PaidParking3.Properties.Resources.CPS2;
             this.CPSPictureBox.ImageLocation = "";
             this.CPSPictureBox.Location = new System.Drawing.Point(75, 58);
             this.CPSPictureBox.Name = "CPSPictureBox";
@@ -234,7 +234,7 @@ namespace PaidParking3
             this.MinimumSize = new System.Drawing.Size(441, 444);
             this.Name = "ParkingCreationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
-            this.Text = "Создание парковки";
+            this.Text = "Конструирование";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ParkingCreationForm_FormClosing);
             this.Load += new System.EventHandler(this.ParkingCreationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TPSPictureBox)).EndInit();
